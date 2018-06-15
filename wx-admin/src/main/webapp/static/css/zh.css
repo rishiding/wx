@@ -1,0 +1,52 @@
+/**CSS**/
+
+html{
+    fomt-famiily: '微软雅黑';
+}
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div, dl, dt, dd{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+body{
+    background:#f7f7f7;
+    color:#555;
+    font-size:24px;
+    margin:0 auto;
+    max-width:1920px;
+}
+a,a:link,a:active,a:hover,a:visited{
+    color:#555;
+    text-decoration:none
+}
+a[type=button]{
+    color:#fff !important;
+}
+/*input[type=text],textarea{
+    border-radius:5px;
+    border:1px solid #e3e3e3;
+    background:#fff;
+    -webkit-appearance:none;
+    outline:none !important;
+}*/
+/*@media only screen and (max-width:319px) and (min-width:300px){body{font-size:14px}}
+@media only screen and (max-width:359px) and (min-width:320px){body{font-size:15px}}
+@media only screen and (max-width:374px) and (min-width:360px){body{font-size:17.28px}}
+@media only screen and (max-width:479px) and (min-width:375px){body{font-size:18px}}
+@media only screen and (max-width:549px) and (min-width:480px){body{font-size:23px}}
+@media only screen and (max-width:569px) and (min-width:540px){body{font-size:26px}}
+@media only screen and (max-width:640px) and (min-width:570px){body{font-size:31px}}*/
+
+ul, li, dl, dt, dd, p, h1, h2, h3, h4, h5, form, img, div {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 0 none;
+}
+.con{
+    background:#f7f7f7;
+    overflow:hidden;
+}
+del{
+    color:#bbb;
+}

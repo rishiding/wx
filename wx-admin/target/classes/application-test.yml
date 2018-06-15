@@ -1,0 +1,7 @@
+# 测试环境配置  
+spring:  
+  profiles: test  
+  datasource:  
+    url: jdbc:mysql://127.0.0.1:3306/wx?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: xiaoxue
