@@ -61,4 +61,4 @@ page:
   pageSize: 10
 #文件上传的路径
 userfiles:
-  basedir: /data/xf/upload
+  basedir: /data/wx/upload
