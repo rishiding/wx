@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
-	<title>机构管理</title>
+	<title>医院管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 	function page(n,s){
@@ -17,8 +18,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/sys/office/list?type=1&id=${office.id}&parentIds=${office.parentIds}">机构列表</a></li>
-		<shiro:hasPermission name="sys:office:edit"><li><a href="${ctx}/sys/office/form?parent.id=${office.id}">机构添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/sys/office/list?type=1&id=${office.id}&parentIds=${office.parentIds}">医院列表</a></li>
+		<shiro:hasPermission name="sys:office:edit"><li><a href="${ctx}/sys/office/form?parent.id=${office.id}">医院添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="user" action="${ctx}/sys/office/list" method="post" class="breadcrumb form-search ">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
