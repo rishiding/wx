@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * xl-wx
  * springboot的启动类
  * Created by rishi
- * Created on 2017/11/8 16:20
+ * Created on 2018/6/18 16:20
  * Mail 77219569@qq.com
  */
 @EnableCaching

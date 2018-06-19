@@ -41,59 +41,65 @@
 		LEFT JOIN SYS_USER dp ON dp.id = a.deputy_person
     </sql>
 	
-	<select id="get" resultType="com.xl.modules.sys.entity.Office">
+	<select id="get" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
-	<select id="findList" resultType="com.xl.modules.sys.entity.Office">
+	<select id="findDeptList" resultType="Office">
+		SELECT
+			a.id,a.name,a.code
+		FROM sys_office a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null and type != ''">
+			and a.type= #{type}
+		</if>
+		
+		ORDER BY a.code
+	</select>
+	<select id="findList" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null and type != ''">
+			and a.type= #{type}
+		</if>
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
-		OR a.id = #{currentUser.office.id}
+		
+		
 		ORDER BY a.code
 	</select>
 			
-	<select id="findAllList" resultType="com.xl.modules.sys.entity.Office">
+	<select id="findAllList" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY a.code
-	</select>
+	</select> 
 	
-	<select id="findByParentIdsLike" resultType="com.xl.modules.sys.entity.Office">
-		SELECT
-			<include refid="officeColumns"/>
-		FROM sys_office a
-		<include refid="officeJoins"/>
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND 
-		<if test="parentIds != null and parentIds != ''">
-		a.parent_ids LIKE #{parentIds}
-		</if>
-		ORDER BY a.code
-	</select>
-	
-	<select id="findByAreaId" resultType="com.xl.modules.sys.entity.Office">
+    <select id="findInhospDept" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
-		<if test="area != null and area.id != null and area.id != ''">
-		AND ( a.area_id = #{area.id} or ar.parent_ids like <if test="dbName == 'oracle'">'%,'||#{area.id}||',%')</if>
-					<if test="dbName == 'mssql'">'%,'+#{area.id}+',%')</if>
-					<if test="dbName == 'mysql'">CONCAT('%,', #{area.id}, ',%')</if>
-			)
-		</if>
+		and a.parent_id = '22' 
+		ORDER BY a.code
+	</select>
+	
+	<select id="findByParentIdsLike" resultType="Office">
+		SELECT 
+			<include refid="officeColumns"/>
+		FROM sys_office a
+		<include refid="officeJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
 		ORDER BY a.code
 	</select>
 	
@@ -105,7 +111,7 @@
 			area_id, 
 			code, 
 			name, 
-			sort, 
+			sort,  
 			type, 
 			grade, 
 			address, 
@@ -165,7 +171,7 @@
 			master = #{master}, 
 			phone = #{phone}, 
 			fax = #{fax}, 
-			email = #{email}, 
+			email = #{email},
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
@@ -179,7 +185,7 @@
 		UPDATE sys_office SET 
 			parent_id = #{parent.id}, 
 			parent_ids = #{parentIds}
-		WHERE id = #{id}
+		WHERE id = #{id} 
 	</update>
 	
 	<update id="delete">

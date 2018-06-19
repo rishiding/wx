@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xl.modules.sys.dao.UserDao">
 	
+	
+	
     <sql id="userColumns">
     	a.id,
     	a.company_id AS "company.id",
@@ -9,6 +11,8 @@
     	a.login_name,
     	a.password,
     	a.no,
+    	a.card_no AS "cardNo",
+    	a.card_type as "cardType",
 		a.name,
 		a.email,
 		a.phone,
@@ -17,6 +21,9 @@
 		a.login_ip,
 		a.login_date,
 		a.remarks,
+		a.gender,
+		a.title,
+		a.doctor_type as "doctorType",
 		a.login_flag,
 		a.photo,
 		a.create_by AS "createBy.id",
@@ -45,7 +52,13 @@
     	ou.id AS "office.primaryPerson.id",
     	ou.name AS "office.primaryPerson.name",
     	ou2.id AS "office.deputyPerson.id",
-    	ou2.name AS "office.deputyPerson.name"
+    	ou2.name AS "office.deputyPerson.name"<!-- ,
+        r.id AS "roleList.id",
+        r.office_id AS "roleList.office.id",
+        r.name AS "roleList.name",
+        r.enname AS "roleList.enname",
+        r.role_type AS "roleList.roleType",
+        r.data_scope AS "roleList.dataScope" -->
     </sql>
     
     <sql id="userJoins">
@@ -62,25 +75,29 @@
     </sql>
 	
 	<!-- 根据编号获得用户 -->
-	<select id="get" resultType="com.xl.modules.sys.entity.User">
+	<select id="get" resultType="User">
 		SELECT
-			<include refid="userColumns"/>
+			<include refid="userColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
 		FROM sys_user a
-		<include refid="userJoins"/>
+		<include refid="userJoins"/><!-- 
+		LEFT JOIN sys_role_office ro ON ro.role_id = r.id -->
 		WHERE a.id = #{id}
 	</select>
 	
 	<!-- 根据登录名查询用户 -->
-	<select id="getByLoginName" resultType="com.xl.modules.sys.entity.User" parameterType="com.xl.modules.sys.entity.User">
+	<select id="getByLoginName" resultType="User" parameterType="User">
 		SELECT
-			<include refid="userColumns"/>
+			<include refid="userColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
 		FROM sys_user a
-		<include refid="userJoins"/>
+		<include refid="userJoins"/><!-- 
+		LEFT JOIN sys_role_office ro ON ro.role_id = r.id -->
 		WHERE a.login_name = #{loginName} AND a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
 	
 	<!-- 分页查询用户信息 -->
-	<select id="findList" resultType="com.xl.modules.sys.entity.User">
+	<select id="findList" resultType="User">
 		SELECT
 			<include refid="userColumns"/>
 		FROM sys_user a
@@ -101,9 +118,12 @@
 					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
 		</if>
+		<if test="userType != null and userType != ''">
+			and a.user_type=#{userType}
+		</if>
 		<!-- 如果不是超级管理员，则不显示超级管理员用户 -->
 		<if test="!currentUser.admin">
-			AND a.id != 's1'
+			AND a.id != '1'
 		</if>
 		<if test="loginName != null and loginName != ''">
 			AND a.login_name like 
@@ -111,6 +131,13 @@
 					<if test="dbName == 'mssql'">'%'+#{loginName}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
 		</if>
+		<if test="mobile != null and mobile != ''">
+			AND a.mobile = #{mobile}
+		</if>
+		<if test="doctorType != null and doctorType != ''">
+			and doctor_type=#{doctorType}
+		</if>
+		
 		<if test="name != null and name != ''">
 			AND a.name like 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
@@ -130,7 +157,7 @@
 	</select>
 	
 	<!-- 根据OfficeId获取用户（树查询用户时用） -->
-	<select id="findUserByOfficeId" resultType="com.xl.modules.sys.entity.User" useCache="true">
+	<select id="findUserByOfficeId" resultType="User" useCache="true">
 		SELECT
 			a.id, a.name, a.login_name
 		FROM sys_user a
@@ -140,7 +167,7 @@
 	</select>
 	
 	<!-- 查询全部用户 -->
-	<select id="findAllList" resultType="com.xl.modules.sys.entity.User">
+	<select id="findAllList" resultType="User">
 		SELECT
 			<include refid="userColumns"/>
 		FROM sys_user a
@@ -150,7 +177,7 @@
 	</select>
 	
 	<!-- 查询全部用户数目 -->
-	<select id="findAllCount" resultType="java.lang.Long">
+	<select id="findAllCount" resultType="long">
 		SELECT
 			COUNT(1)
 		FROM sys_user a
@@ -178,6 +205,11 @@
 			remarks, 
 			login_flag, 
 			photo, 
+			card_no,
+    		card_type,
+    		gender,
+			title,
+			doctor_type,
 			del_flag
 		) VALUES (
 			#{id}, 
@@ -198,6 +230,11 @@
 			#{remarks}, 
 			#{loginFlag}, 
 			#{photo}, 
+			#{cardNo},
+    		#{cardType},
+    		#{gender},
+			#{title},
+			#{doctorType},
 			#{delFlag}
 		)
 	</insert>
@@ -219,6 +256,11 @@
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
 			login_flag = #{loginFlag},
+			card_no =#{cardNo},
+    		card_type=#{cardType},
+    		gender=#{gender},
+			title=#{title},
+			doctor_type=#{doctorType},
 			photo = #{photo}
 		WHERE id = #{id}
 	</update>
@@ -229,7 +271,7 @@
 	</delete>
 	
 	<!-- 插入用户和角色关联表数据 -->
-	<insert id="insertUserRole">
+	<insert id="insertUserRole" useGeneratedKeys="false">
 		INSERT INTO sys_user_role(user_id, role_id)
 		<foreach collection="roleList" item="role" separator=" union all ">
 			SELECT #{id}, #{role.id}
@@ -248,6 +290,11 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
+			card_no =#{cardNo},
+    		card_type=#{cardType},
+    		gender=#{gender},
+			title=#{title},
+			doctor_type=#{doctorType},
 			photo = #{photo}
 		WHERE id = #{id}
 	</update>

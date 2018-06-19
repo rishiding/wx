@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.xl.common.persistence.DataEntity;
 import com.xl.common.utils.excel.annotation.ExcelField;
 import com.xl.common.utils.excel.fieldtype.RoleListType;
+import com.xl.modules.sys.utils.DictUtils;
 
 /**
  * 用户Entity
@@ -28,12 +29,17 @@ import com.xl.common.utils.excel.fieldtype.RoleListType;
 public class User extends DataEntity<User> {
 
 	private static final long serialVersionUID = 1L;
-	private Office company;	// 归属公司
-	private Office office;	// 归属部门
+	private Office company;	// 归属医院
+	private Office office;	// 归属科室
 	private String loginName;// 登录名
 	private String password;// 密码
 	private String no;		// 工号
+	private String gender;	//性别
+	private String title;	//职称
+	private String cardNo;  //卡号
+	private String cardType; //卡类型
 	private String name;	// 姓名
+	private String birthday; //出生日期
 	private String email;	// 邮箱
 	private String phone;	// 电话
 	private String mobile;	// 手机
@@ -42,10 +48,9 @@ public class User extends DataEntity<User> {
 	private Date loginDate;	// 最后登陆日期
 	private String loginFlag;	// 是否允许登陆
 	private String photo;	// 头像
-
 	private String oldLoginName;// 原登录名
 	private String newPassword;	// 新密码
-	
+	private String doctorType; //医生类别
 	private String oldLoginIp;	// 上次登陆IP
 	private Date oldLoginDate;	// 上次登陆日期
 	
@@ -75,6 +80,13 @@ public class User extends DataEntity<User> {
 	public String getPhoto() {
 		return photo;
 	}
+	
+	public String getUserTypeName() {
+		return DictUtils.getDictLabel(userType, "sys_user_type", "");
+	}
+	public String getGenderName() {
+		return DictUtils.getDictLabel(gender, "sex", "");
+	}
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
@@ -93,7 +105,7 @@ public class User extends DataEntity<User> {
 		return id;
 	}
 
-	@JsonIgnore
+	
 	@NotNull(message="归属公司不能为空")
 	@ExcelField(title="归属公司", align=2, sort=20)
 	public Office getCompany() {
@@ -104,7 +116,7 @@ public class User extends DataEntity<User> {
 		this.company = company;
 	}
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@NotNull(message="归属部门不能为空")
 	@ExcelField(title="归属部门", align=2, sort=25)
 	public Office getOffice() {
@@ -141,10 +153,42 @@ public class User extends DataEntity<User> {
 		return name;
 	}
 	
-	@Length(min=1, max=100, message="工号长度必须介于 1 和 100 之间")
+	
 	@ExcelField(title="工号", align=2, sort=45)
 	public String getNo() {
 		return no;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getCardNo() {
+		return cardNo;
+	}
+
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+
+	public String getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setNo(String no) {
@@ -153,6 +197,14 @@ public class User extends DataEntity<User> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 
 	@Email(message="邮箱格式不正确")
@@ -241,6 +293,18 @@ public class User extends DataEntity<User> {
 		this.newPassword = newPassword;
 	}
 
+	public String getDoctorType() {
+		return doctorType;
+	}
+	
+	public String getDoctorTypeName() {
+		return DictUtils.getDictLabel(doctorType, "reserve_type", "");
+	}
+
+	public void setDoctorType(String doctorType) {
+		this.doctorType = doctorType;
+	}
+
 	public String getOldLoginIp() {
 		if (oldLoginIp == null){
 			return loginIp;
@@ -312,7 +376,7 @@ public class User extends DataEntity<User> {
 	}
 	
 	public static boolean isAdmin(String id){
-		return id != null && "s1".equals(id);
+		return id != null && "1".equals(id);
 	}
 	
 	@Override

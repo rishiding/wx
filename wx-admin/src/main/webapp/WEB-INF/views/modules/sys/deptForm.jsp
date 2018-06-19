@@ -28,42 +28,38 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/office/list?id=${office.parent.id}&parentIds=${office.parentIds}">机构列表</a></li>
-		<li class="active"><a href="${ctx}/sys/office/form?id=${office.id}&parent.id=${office.parent.id}">机构<shiro:hasPermission name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/sys/office/deptList?id=${office.parent.id}&parentIds=${office.parentIds}">科室列表</a></li>
+		<li class="active"><a href="${ctx}/sys/office/deptForm?type=2&id=${office.id}&parent.id=${office.parent.id}">科室<shiro:hasPermission name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="office" action="${ctx}/sys/office/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<input type="hidden" name="parent.id" value="0">
+		
+		
 		<div class="control-group">
-			<label class="control-label">归属区域:</label>
+			<label class="control-label">所属医院:</label>
 			<div class="controls">
-                <sys:treeselect id="area" name="area.id" value="${office.area.id}" labelName="area.name" labelValue="${office.area.name}"
-					title="区域" url="/sys/area/treeData" cssClass="required"/>
+                <sys:treeselect id="office" name="parent.id" value="${office.parent.id}" labelName="parent.name" labelValue="${office.parent.name}"
+					title="机构" url="/sys/office/treeData?type=1" extId="${office.id}" cssClass="" allowClear="${office.currentUser.admin}"/>
 			</div>
 		</div>
+		<input type="hidden" name="area.id" value="0">
 		<div class="control-group">
-			<label class="control-label">医院名称:</label>
+			<label class="control-label">科室名称:</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">医院编码:</label>
+			<label class="control-label">编码:</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
-		<input type="hidden" name="type" value="1">
-		<div class="control-group">
-			<label class="control-label">机构级别:</label>
-			<div class="controls">
-				<form:select path="grade" class="input-medium">
-					<form:options items="${fns:getDictList('sys_office_grade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
+		<input type="hidden" name="type" value="2">
+		
+		<input type="hidden" name="grade" value="0">
 		<div class="control-group">
 			<label class="control-label">是否可用:</label>
 			<div class="controls">

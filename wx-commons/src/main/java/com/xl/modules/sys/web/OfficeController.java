@@ -1,11 +1,12 @@
 /**
- * Copyright &copy; 2017 <a href="#">xf</a> All rights reserved.
+ * Copyright &copy; 2017-2017<a href="#">rishi</a> All rights reserved.
  */
 package com.xl.modules.sys.web;
 
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -21,18 +22,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.xl.common.config.Global;
+import com.xl.common.config.ResponseCodeCanstants;
+import com.xl.common.config.ResponseResult;
+import com.xl.common.persistence.Page;
 import com.xl.common.utils.StringUtils;
 import com.xl.common.web.BaseController;
 import com.xl.modules.sys.entity.Office;
 import com.xl.modules.sys.entity.User;
-import com.xl.modules.sys.service.AreaService;
 import com.xl.modules.sys.service.OfficeService;
 import com.xl.modules.sys.utils.DictUtils;
 import com.xl.modules.sys.utils.UserUtils;
 
 /**
  * 机构Controller
- * @author dingrenxin
+ * @author ThinkGem
  * @version 2013-5-15
  */
 @Controller
@@ -42,9 +45,6 @@ public class OfficeController extends BaseController {
 	@Autowired
 	private OfficeService officeService;
 	
-	@Autowired
-	private AreaService areaService;
-	
 	@ModelAttribute("office")
 	public Office get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
@@ -53,28 +53,62 @@ public class OfficeController extends BaseController {
 			return new Office();
 		}
 	}
-
+	
 	@RequiresPermissions("sys:office:view")
-	@RequestMapping(value = {""})
-	public String index(Office office, Model model) {
-//        model.addAttribute("list", officeService.findAll());
-		return "modules/sys/officeIndex";
+	@RequestMapping(value = {"deptList"})
+	public String deptList(Office office,  HttpServletRequest request, HttpServletResponse response, Model model) {
+		if(office==null){
+			office=new Office();
+		}
+		office.setType("2");
+        Page<Office> page = officeService.findPage(new Page<Office>(request, response), office);
+        model.addAttribute("page", page);
+		return "modules/sys/deptList";
 	}
+	
+	@RequiresPermissions("sys:office:view")
+	@RequestMapping(value = "deptForm")
+	public String deptForm(Office office, Model model) {
+		User user = UserUtils.getUser();
+		if (office.getParent()==null || office.getParent().getId()==null){
+			office.setParent(user.getOffice());
+		}
+		office.setParent(officeService.get(office.getParent().getId()));
+		if (office.getArea()==null){
+			office.setArea(user.getOffice().getArea());
+		}
+		// 自动获取排序号
+		if (StringUtils.isBlank(office.getId())&&office.getParent()!=null){
+			int size = 0;
+			List<Office> list = officeService.findAll();
+			for (int i=0; i<list.size(); i++){
+				Office e = list.get(i);
+				if (e.getParent()!=null && e.getParent().getId()!=null
+						&& e.getParent().getId().equals(office.getParent().getId())){
+					size++;
+				}
+			}
+			office.setCode(office.getParent().getCode() + StringUtils.leftPad(String.valueOf(size > 0 ? size+1 : 1), 3, "0"));
+		}
+		model.addAttribute("office", office);
+		return "modules/sys/deptForm";
+	}
+	
 
+	
+
+	
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = {"list"})
-	public String list(Office office, Model model) {
-        model.addAttribute("list", officeService.findList(office));
+	public String list(Office office,  HttpServletRequest request, HttpServletResponse response, Model model) {
+		if(office==null){
+			office=new Office();
+		}
+		office.setType("1");
+        Page<Office> page = officeService.findPage(new Page<Office>(request, response), office);
+        model.addAttribute("page", page);
 		return "modules/sys/officeList";
 	}
-	
-	@RequiresPermissions("sys:office:view")
-	@RequestMapping(value = {"list1"})
-	public String findByAreaId(Office office, Model model) {
-        model.addAttribute("list", officeService.findByAreaId(office));
-		return "modules/sys/officeList";
-	}
-	
 	
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = "form")
@@ -86,8 +120,6 @@ public class OfficeController extends BaseController {
 		office.setParent(officeService.get(office.getParent().getId()));
 		if (office.getArea()==null){
 			office.setArea(user.getOffice().getArea());
-		}else{
-			office.setArea(areaService.get(office.getArea()));
 		}
 		// 自动获取排序号
 		if (StringUtils.isBlank(office.getId())&&office.getParent()!=null){
@@ -132,9 +164,13 @@ public class OfficeController extends BaseController {
 			}
 		}
 		
-		addMessage(redirectAttributes, "保存机构'" + office.getName() + "'成功");
-//		String id = "0".equals(office.getParentId()) ? "" : office.getParentId();
-		return "redirect:" + adminPath + "/sys/office/list";
+		addMessage(redirectAttributes, "保存'" + office.getName() + "'成功");
+		String id = "0".equals(office.getParentId()) ? "" : office.getParentId();
+		if(office.getType().equals("2")){
+			return "redirect:" + adminPath + "/sys/office/deptList?id="+id+"&parentIds="+office.getParentIds();
+		}else{
+			return "redirect:" + adminPath + "/sys/office/list?id="+id+"&parentIds="+office.getParentIds();
+		}
 	}
 	
 	@RequiresPermissions("sys:office:edit")
@@ -150,7 +186,11 @@ public class OfficeController extends BaseController {
 			officeService.delete(office);
 			addMessage(redirectAttributes, "删除机构成功");
 //		}
-		return "redirect:" + adminPath + "/sys/office/list";
+			if(office.getType().equals("2")){
+				return "redirect:" + adminPath + "/sys/office/deptList?id="+office.getParentId()+"&parentIds="+office.getParentIds();
+			}else{
+				return "redirect:" + adminPath + "/sys/office/list?id="+office.getParentId()+"&parentIds="+office.getParentIds();
+			}	
 	}
 
 	/**
@@ -171,14 +211,14 @@ public class OfficeController extends BaseController {
 		for (int i=0; i<list.size(); i++){
 			Office e = list.get(i);
 			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1))
-					&& (type == null || (type != null &&  type.equals(e.getType())))
+					&& (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
 					&& (grade == null || (grade != null && Integer.parseInt(e.getGrade()) <= grade.intValue()))
 					&& Global.YES.equals(e.getUseable())){
 				Map<String, Object> map = Maps.newHashMap();
 				map.put("id", e.getId());
 				map.put("pId", e.getParentId());
 				map.put("pIds", e.getParentIds());
-				map.put("name", e.getName()+"("+e.getTypeName()+")");
+				map.put("name", e.getName());
 				if (type != null && "3".equals(type)){
 					map.put("isParent", true);
 				}
@@ -186,5 +226,17 @@ public class OfficeController extends BaseController {
 			}
 		}
 		return mapList;
+	}
+	  
+	@ResponseBody 
+	@RequestMapping(value = "findInhospDept")  
+	public Object findInhospDept(Office office) {  
+		  
+		try {    
+			return new ResponseResult(ResponseCodeCanstants.SUCCESS, officeService.findInhospDept(office), "操作成功");  
+		} catch (Exception e) {  
+			e.printStackTrace();   
+		} 
+		return new ResponseResult(ResponseCodeCanstants.SUCCESS, "操作失败"); 
 	}
 }

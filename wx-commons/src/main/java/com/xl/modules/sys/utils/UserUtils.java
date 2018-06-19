@@ -18,13 +18,11 @@ import com.xl.modules.sys.dao.AreaDao;
 import com.xl.modules.sys.dao.MenuDao;
 import com.xl.modules.sys.dao.OfficeDao;
 import com.xl.modules.sys.dao.RoleDao;
-import com.xl.modules.sys.dao.UnitDao;
 import com.xl.modules.sys.dao.UserDao;
 import com.xl.modules.sys.entity.Area;
 import com.xl.modules.sys.entity.Menu;
 import com.xl.modules.sys.entity.Office;
 import com.xl.modules.sys.entity.Role;
-import com.xl.modules.sys.entity.Unit;
 import com.xl.modules.sys.entity.User;
 import com.xl.modules.sys.security.SystemAuthorizingRealm.Principal;
 
@@ -40,7 +38,6 @@ public class UserUtils {
 	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
 	private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
 	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
-	private static UnitDao unitDao = SpringContextHolder.getBean(UnitDao.class);
 
 	public static final String USER_CACHE = "userCache";
 	public static final String USER_CACHE_ID_ = "id_";
@@ -216,39 +213,7 @@ public class UserUtils {
 	}
 	
 
-	/**
-	 * 获取当前用户有权限访问的部门
-	 * @return
-	 */
-	public static List<Unit> getUnitAllList(){
-		@SuppressWarnings("unchecked")
-		List<Unit> unitList = (List<Unit>)getCache(CACHE_UNIT_ALL_LIST);
-		if (unitList == null){
-			unitList = unitDao.findAllList(new Unit());
-		}
-		return unitList;
-	}
 	
-	/**
-	 * 获取当前用户有权限访问的部门
-	 * @return
-	 */
-	public static List<Unit> getUnitList(){
-		@SuppressWarnings("unchecked")
-		List<Unit> unitList = (List<Unit>)getCache(CACHE_UNIT_LIST);
-		if (unitList == null){
-			User user = getUser();
-			if (user.isAdmin()){
-				unitList = unitDao.findAllList(new Unit());
-			}else{
-				Unit unit = new Unit();
-				unit.setOffice(user.getOffice());
-				unitList = unitDao.findList(unit);
-			}
-			putCache(CACHE_UNIT_LIST, unitList);
-		}
-		return unitList;
-	}
 	
 
 	/**

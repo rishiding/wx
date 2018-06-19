@@ -1,5 +1,5 @@
 /**
- * Copyright &copy; 2017 <a href="#">xf</a> All rights reserved.
+ * Copyright &copy; 2012-2016
  */
 package com.xl.modules.sys.web;
 
@@ -25,9 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.xl.common.config.Global;
-import com.xl.common.persistence.Page;
+import com.xl.common.config.ResponseCodeCanstants;
+import com.xl.common.config.ResponseResult;
+import com.xl.common.persistence.Page; 
 import com.xl.common.utils.DateUtils;
-import com.xl.common.utils.StringUtils;
+import com.xl.common.utils.StringUtils; 
 import com.xl.common.utils.excel.ExportExcel;
 import com.xl.common.utils.excel.ImportExcel;
 import com.xl.common.validator.BeanValidators;
@@ -40,7 +42,7 @@ import com.xl.modules.sys.utils.UserUtils;
 
 /**
  * 用户Controller
- * @author dingrenxin
+ * @author ThinkGem
  * @version 2013-8-29
  */
 @Controller
@@ -61,7 +63,9 @@ public class UserController extends BaseController {
 
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = {"index"})
-	public String index(User user, Model model) {
+	public String index( Model model) {
+		User user=UserUtils.getUser();
+		model.addAttribute("user",user);
 		return "modules/sys/userIndex";
 	}
 
@@ -95,7 +99,6 @@ public class UserController extends BaseController {
 		return "modules/sys/userForm";
 	}
 
-	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "save")
 	public String save(User user, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
@@ -166,7 +169,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "export", method=RequestMethod.POST)
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "用户数据"+ DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "用户数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<User> page = systemService.findUser(new Page<User>(request, response, -1), user);
     		new ExportExcel("用户数据", User.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
@@ -180,7 +183,7 @@ public class UserController extends BaseController {
 	 * 导入用户数据
 	 * @param file
 	 * @param redirectAttributes
-	 * @return
+	 * @return 
 	 */
 	@RequiresPermissions("sys:user:edit")
     @RequestMapping(value = "import", method=RequestMethod.POST)
@@ -330,6 +333,60 @@ public class UserController extends BaseController {
 		model.addAttribute("user", user);
 		return "modules/sys/userModifyPwd";
 	}
+	@ResponseBody
+	@RequestMapping(value = "/imageUnload", method = RequestMethod.POST)
+	public Object imageUnload(HttpServletRequest request,String id,String byteString,
+			HttpServletResponse response, Model model) {
+		
+		String out="0";
+		
+		if(id!=null){
+			User user = systemService.getUser(id);
+			if(user!=null){
+				String path=UploadifyController.saveByteImg(request, byteString);
+				System.out.println(path);
+				if(path!=null&&!path.equals("")){
+					user.setPhoto(path);
+					systemService.saveUser(user);
+					out="1";
+				}
+				
+			}
+		}
+		return new ResponseResult(ResponseCodeCanstants.SUCCESS, out);
+	}
+	@RequestMapping(value = "headImg")
+	public String headImg(Model model) {
+		User user = UserUtils.getUser();
+		model.addAttribute("user", user);
+		return "modules/sys/userHeadImg";
+	}
+	/**
+	 * 单独密码修改
+	 * @param oldPassword
+	 * @param newPassword
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("user")
+	@RequestMapping(value = "modifyPwd2")
+	public String modifyPwd2( String oldPassword, String newPassword,Model model) {
+		User user = UserUtils.getUser();
+		if (StringUtils.isNotBlank(oldPassword) && StringUtils.isNotBlank(newPassword)){
+			if(Global.isDemoMode()){
+				model.addAttribute("message", "演示模式，不允许操作！");
+				return "modules/sys/userModifyPwd2";
+			}
+			if (SystemService.validatePassword(oldPassword, user.getPassword())){
+				systemService.updatePasswordById(user.getId(), user.getLoginName(), newPassword);
+				model.addAttribute("message", "修改密码成功");
+			}else{
+				model.addAttribute("message", "修改密码失败，旧密码错误");
+			}
+		}
+		model.addAttribute("user", user);
+		return "modules/sys/userModifyPwd2";
+	}
 	
 	@RequiresPermissions("user")
 	@ResponseBody
@@ -348,25 +405,5 @@ public class UserController extends BaseController {
 		return mapList;
 	}
     
-//	@InitBinder
-//	public void initBinder(WebDataBinder b) {
-//		b.registerCustomEditor(List.class, "roleList", new PropertyEditorSupport(){
-//			@Autowired
-//			private SystemService systemService;
-//			@Override
-//			public void setAsText(String text) throws IllegalArgumentException {
-//				String[] ids = StringUtils.split(text, ",");
-//				List<Role> roles = new ArrayList<Role>();
-//				for (String id : ids) {
-//					Role role = systemService.getRole(Long.valueOf(id));
-//					roles.add(role);
-//				}
-//				setValue(roles);
-//			}
-//			@Override
-//			public String getAsText() {
-//				return Collections3.extractToString((List) getValue(), "id", ",");
-//			}
-//		});
-//	}
+
 }
