@@ -10,4 +10,6 @@ public class Constants {
 	 */
 	public static final String DEVICE_DATE_TYPE_MONTH="1"; //月
 	public static final String DEVICE_DATE_TYPE_WEEK="2"; //周
+	
+	public static final String ROOT_ID="0";//默认根id
 }

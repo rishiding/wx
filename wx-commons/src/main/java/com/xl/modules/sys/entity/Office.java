@@ -37,7 +37,7 @@ public class Office extends TreeEntity<Office> {
 	
 	public Office(){
 		super();
-		this.type = "1";
+		
 	}
 
 	public Office(String id){

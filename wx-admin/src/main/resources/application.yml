@@ -55,7 +55,8 @@ mybatis:
 #admin页面管理Path
 adminPath: /admin
 frontPath: /f
-
+#网站URL后缀
+urlSuffix: .html
 #分页配置
 page:
   pageSize: 10

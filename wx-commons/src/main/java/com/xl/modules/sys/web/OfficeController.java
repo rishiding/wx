@@ -25,6 +25,7 @@ import com.xl.common.config.Global;
 import com.xl.common.config.ResponseCodeCanstants;
 import com.xl.common.config.ResponseResult;
 import com.xl.common.persistence.Page;
+import com.xl.common.service.BaseService;
 import com.xl.common.utils.StringUtils;
 import com.xl.common.web.BaseController;
 import com.xl.modules.sys.entity.Office;
@@ -61,6 +62,7 @@ public class OfficeController extends BaseController {
 			office=new Office();
 		}
 		office.setType("2");
+		office.getSqlMap().put("dsf", BaseService.dataScopeFilter(UserUtils.getUser(), "a", ""));
         Page<Office> page = officeService.findPage(new Page<Office>(request, response), office);
         model.addAttribute("page", page);
 		return "modules/sys/deptList";
@@ -211,7 +213,7 @@ public class OfficeController extends BaseController {
 		for (int i=0; i<list.size(); i++){
 			Office e = list.get(i);
 			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1))
-					&& (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
+					&& (type == null || (type != null &&  type.equals(e.getType()) ))
 					&& (grade == null || (grade != null && Integer.parseInt(e.getGrade()) <= grade.intValue()))
 					&& Global.YES.equals(e.getUseable())){
 				Map<String, Object> map = Maps.newHashMap();
