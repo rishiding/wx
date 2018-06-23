@@ -39,7 +39,7 @@ public class Article extends DataEntity<Article> {
 	private String posid;	// 推荐位，多选（1：首页焦点图；2：栏目页文章推荐；）
     private String customContentView;	// 自定义内容视图
    	private String viewConfig;	// 视图参数
-
+   	private String companyId;//所属医院
 	private ArticleData articleData;	//文章副表
 	
 	private Date beginDate;	// 开始时间
@@ -234,6 +234,14 @@ public class Article extends DataEntity<Article> {
    	public String getImageSrc() {
         return CmsUtils.formatImageSrcToWeb(this.image);
    	}
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
 	
 }
 

@@ -56,13 +56,13 @@
 							top.$.jBox.tip("不能选择父节点（"+nodes[i].name+"）请重新选择。");
 							return false;
 						}//</c:if><c:if test="${not empty module && selectScopeModule}">
-						if (nodes[i].module == ""){
-							top.$.jBox.tip("不能选择公共模型（"+nodes[i].name+"）请重新选择。");
-							return false;
-						}else if (nodes[i].module != "${module}"){
-							top.$.jBox.tip("不能选择当前栏目以外的栏目模型，请重新选择。");
-							return false;
-						}//</c:if>
+// 						if (nodes[i].module == ""){
+// 							top.$.jBox.tip("不能选择公共模型（"+nodes[i].name+"）请重新选择。");
+// 							return false;
+// 						}else if (nodes[i].module != "${module}"){
+// 							top.$.jBox.tip("不能选择当前栏目以外的栏目模型，请重新选择。");
+// 							return false;
+// 						}//</c:if>
 						ids.push(nodes[i].id);
 						names.push(nodes[i].name);//<c:if test="${!checked}">
 						break; // 如果为非复选框选择，则返回第一个选择  </c:if>

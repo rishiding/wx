@@ -94,10 +94,12 @@ public class ArticleController extends BaseController {
 		if (!beanValidator(model, article)){
 			return form(article, model);
 		}
+		if(StringUtils.isBlank(article.getCompanyId())){
+			article.setCompanyId(UserUtils.getUser().getCompany().getId());
+		}
 		articleService.save(article);
 		addMessage(redirectAttributes, "保存文章'" + StringUtils.abbr(article.getTitle(),50) + "'成功");
-		String categoryId = article.getCategory()!=null?article.getCategory().getId():null;
-		return "redirect:" + adminPath + "/cms/article/?repage&category.id="+(categoryId!=null?categoryId:"");
+		return "redirect:" + adminPath + "/cms/article/?repage";
 	}
 	
 	@RequiresPermissions("cms:article:edit")

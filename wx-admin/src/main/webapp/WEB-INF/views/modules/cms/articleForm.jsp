@@ -51,29 +51,29 @@
 			<div class="controls">
                 <sys:treeselect id="category" name="category.id" value="${article.category.id}" labelName="category.name" labelValue="${article.category.name}"
 					title="栏目" url="/cms/category/treeData" module="article" selectScopeModule="true" notAllowSelectRoot="false" notAllowSelectParent="true" cssClass="required"/>&nbsp;
-                <span>
+                <!-- <span>
                     <input id="url" type="checkbox" onclick="if(this.checked){$('#linkBody').show()}else{$('#linkBody').hide()}$('#link').val()"><label for="url">外部链接</label>
-                </span>
+                </span> -->
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">标题:</label>
 			<div class="controls">
 				<form:input path="title" htmlEscape="false" maxlength="200" class="input-xxlarge measure-input required"/>
-				&nbsp;<label>颜色:</label>
+				&nbsp;<%-- <label>颜色:</label>
 				<form:select path="color" class="input-mini">
 					<form:option value="" label="默认"/>
 					<form:options items="${fns:getDictList('color')}" itemLabel="label" itemValue="value" htmlEscape="false" />
-				</form:select>
+				</form:select> --%>
 			</div>
 		</div>
-        <div id="linkBody" class="control-group" style="display:none">
+       <%--  <div id="linkBody" class="control-group" style="display:none">
             <label class="control-label">外部链接:</label>
             <div class="controls">
                 <form:input path="link" htmlEscape="false" maxlength="200" class="input-xlarge"/>
                 <span class="help-inline">绝对或相对地址。</span>
             </div>
-        </div>
+        </div> --%>
 		<div class="control-group">
 			<label class="control-label">关键字:</label>
 			<div class="controls">
@@ -115,13 +115,13 @@
 				<sys:ckeditor replace="content" uploadPath="/cms/article" />
 			</div>
 		</div>
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">来源:</label>
 			<div class="controls">
 				<form:input path="articleData.copyfrom" htmlEscape="false" maxlength="200" class="input-xlarge"/>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		<%-- <div class="control-group">
 			<label class="control-label">相关文章:</label>
 			<div class="controls">
 				<form:hidden id="articleDataRelation" path="articleData.relation" htmlEscape="false" maxlength="200" class="input-xlarge"/>
@@ -167,8 +167,8 @@
 					});
 				</script>
 			</div>
-		</div>
-		<div class="control-group">
+		</div> --%>
+		<%-- <div class="control-group">
 			<label class="control-label">是否允许评论:</label>
 			<div class="controls">
 				<form:radiobuttons path="articleData.allowComment" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
@@ -179,7 +179,7 @@
 			<div class="controls">
 				<form:checkboxes path="posidList" items="${fns:getDictList('cms_posid')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 			</div>
-		</div>
+		</div> --%>
 		<div class="control-group">
 			<label class="control-label">发布时间:</label>
 			<div class="controls">
@@ -197,7 +197,7 @@
 				</div>
 			</div>
 		</shiro:hasPermission>
-		<shiro:hasPermission name="cms:category:edit">
+		<%-- <shiro:hasPermission name="cms:category:edit">
             <div class="control-group">
                 <label class="control-label">自定义内容视图:</label>
                 <div class="controls">
@@ -236,7 +236,7 @@
 					</script>
 				</div>
 			</div>
-		</c:if>
+		</c:if> --%>
 		<div class="form-actions">
 			<shiro:hasPermission name="cms:article:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

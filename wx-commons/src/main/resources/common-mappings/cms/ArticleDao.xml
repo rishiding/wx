@@ -23,6 +23,7 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
+		a.company_id AS "companyId",
 		c.name AS "category.name",
 		u.name AS "user.name"
 	</sql>
@@ -71,6 +72,9 @@
 			</if>
 			<if test="image != null and image != ''">
 				AND a.image  = #{image}
+			</if>
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id  = #{companyId}
 			</if>
 			<if test="createBy != null and createBy.id != null and createBy.id != ''">
 				AND a.create_by  = #{createBy.id}
@@ -126,6 +130,7 @@
 			update_by,
 			update_date,
 			remarks,
+			company_id ,
 			del_flag
 		) VALUES (
 			#{id},
@@ -147,6 +152,7 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
+			#{companyId},
 			#{delFlag}
 		)
 	</insert>
@@ -170,6 +176,7 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks},
+			company_id  = #{companyId},
 			del_flag = #{delFlag}
 		WHERE id = #{id}
 	</update>

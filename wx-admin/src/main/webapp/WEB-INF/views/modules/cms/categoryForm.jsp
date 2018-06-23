@@ -50,13 +50,13 @@
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">缩略图:</label>
 			<div class="controls">
 				<form:hidden path="image" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 				<sys:ckfinder input="image" type="thumb" uploadPath="/cms/category"/>
 			</div>
-		</div>
+		</div> --%>
 		<div class="control-group">
 			<label class="control-label">排序:</label>
 			<div class="controls">
