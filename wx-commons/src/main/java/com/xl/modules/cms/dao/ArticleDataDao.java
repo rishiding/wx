@@ -10,7 +10,8 @@ import com.xl.modules.cms.entity.ArticleData;
 
 /**
  * 文章DAO接口
- * @author 
+ * @author ThinkGem
+ * @version 2013-8-23
  */
 @Mapper
 public interface ArticleDataDao extends CrudDao<ArticleData> {

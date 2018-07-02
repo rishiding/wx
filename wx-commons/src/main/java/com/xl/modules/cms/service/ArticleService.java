@@ -59,7 +59,6 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 				category = new Category();
 			}
 			category.setParentIds(category.getId());
-			category.setSite(category.getSite());
 			article.setCategory(category);
 		}
 		else{

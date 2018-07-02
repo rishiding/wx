@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.xl.common.config.Global;
 import com.xl.common.persistence.DataEntity;
 
+
 /**
  * 文章Entity
  * @author ThinkGem

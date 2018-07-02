@@ -6,7 +6,6 @@
 		a.id AS "id",
 		a.parent_id AS "parent.id",
 		a.parent_ids AS "parentIds",
-		a.site_id AS "site.id",
 		a.office_id AS "office.id",
 		a.module AS "module",
 		a.name AS "name",
@@ -32,15 +31,13 @@
 		a.del_flag AS "delFlag",
 		c.name AS "parent.name",
 		c.view_config AS "parent.viewConfig",
-		o.name AS "office.name",
-		s.theme AS "site.theme"
+		o.name AS "office.name"
 	</sql>
 	
 	<sql id="cmsCategoryDaoJoins">
 	    LEFT JOIN cms_category c ON c.id = a.parent_id
 		LEFT JOIN sys_office o ON o.id = a.office_id
 		LEFT JOIN sys_user u ON u.id = a.create_by
-		LEFT JOIN cms_site s ON a.site_id = s.id
 	</sql>
     
 	<select id="get" resultType="Category">
@@ -48,7 +45,6 @@
 			a.id AS "id",
 			a.parent_id AS "parent.id",
 			a.parent_ids AS "parentIds",
-			a.site_id AS "site.id",
 			a.office_id AS "office.id",
 			a.module AS "module",
 			a.name AS "name",
@@ -104,15 +100,15 @@
 		<include refid="cmsCategoryDaoJoins"/>
 		<where>
 			a.del_flag = #{delFlag}
-			<if test="site != null and site.id != null and site.id != ''">
-				AND a.site_id  = #{site.id}
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id  = #{office.id}
 			</if>
 			<if test="parent != null and parent.id != null and parent.id != ''">
 				AND a.parent_id  = #{parent.id}
 			</if>
 			${sqlMap.dsf}
 		</where>		
-			ORDER BY a.site_id,a.sort ASC
+			ORDER BY a.sort ASC
 	</select>
 	
 	<select id="findModule" resultType="Category">
@@ -122,8 +118,8 @@
 		<include refid="cmsCategoryDaoJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="site != null and site.id != null and site.id != ''">
-				AND a.site_id  = #{site.id}
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id  = #{office.id}
 			</if>
 			<if test="parent != null and parent.id != null and parent.id != ''">
 				AND a.parent_id  = #{parent.id}
@@ -133,7 +129,7 @@
 			</if>
 			${sqlMap.dsf}
 		</where>		
-			ORDER BY a.site_id,a.sort ASC
+			ORDER BY a.sort ASC
 	</select>
 	
 	<insert id="insert">
@@ -141,7 +137,6 @@
 			id,
 			parent_id,
 			parent_ids,
-			site_id,
 			office_id,
 			module,
 			name,
@@ -169,7 +164,6 @@
 			#{id},
 			#{parent.id},
 			#{parentIds},
-			#{site.id},
 			#{office.id},
 			#{module},
 			#{name},
@@ -201,7 +195,6 @@
 			
 			parent_id = #{parent.id},
 			parent_ids = #{parentIds},
-			site_id = #{site.id},
 			office_id = #{office.id},
 			module = #{module},
 			name = #{name},
@@ -249,14 +242,15 @@
 		<include refid="cmsCategoryDaoJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} 
-			<if test="site != null and site.id != null and site.id != ''">
-				AND a.site_id  = #{site.id}
+			
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id  = #{office.id}
 			</if>
 			<if test="parent != null and  parent.id != null and parent.id != ''">
 				AND a.parent_id  = #{parent.id}
 			</if>
 		</where>		
-		order by a.site_id, a.sort
+		order by  a.sort
 	</select>
 	<select id="findByParentIdsLike" resultType="Category">
 		SELECT 
@@ -270,7 +264,7 @@
 					<if test="dbName == 'mssql'">'%'+#{id}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{id}, '%')</if>
 		</where>		
-		order by a.site_id, a.sort
+		order by  a.sort
 	</select>
 	
 	<select id="findStats" resultType="java.util.Map" parameterType="java.util.Map">
@@ -290,7 +284,6 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} 
 			AND a.category_id
-			AND c.site_id =
 			AND c.id = :id or c.parent_ids LIKE 
 					<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>

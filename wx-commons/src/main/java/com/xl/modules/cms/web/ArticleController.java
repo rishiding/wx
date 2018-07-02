@@ -24,11 +24,9 @@ import com.xl.common.utils.StringUtils;
 import com.xl.common.web.BaseController;
 import com.xl.modules.cms.entity.Article;
 import com.xl.modules.cms.entity.Category;
-import com.xl.modules.cms.entity.Site;
 import com.xl.modules.cms.service.ArticleDataService;
 import com.xl.modules.cms.service.ArticleService;
 import com.xl.modules.cms.service.CategoryService;
-import com.xl.modules.cms.utils.CmsUtils;
 import com.xl.modules.sys.utils.UserUtils;
 
 /**
@@ -70,7 +68,7 @@ public class ArticleController extends BaseController {
 	public String form(Article article, Model model) {
 		// 如果当前传参有子节点，则选择取消传参选择
 		if (article.getCategory()!=null && StringUtils.isNotBlank(article.getCategory().getId())){
-			List<Category> list = categoryService.findByParentId(article.getCategory().getId(), Site.getCurrentSiteId());
+			List<Category> list = categoryService.findByParentId(article.getCategory().getId(), "");
 			if (list.size() > 0){
 				article.setCategory(null);
 			}else{
@@ -78,13 +76,9 @@ public class ArticleController extends BaseController {
 			}
 		}
 		article.setArticleData(articleDataService.get(article.getId()));
-//		if (article.getCategory()=null && StringUtils.isNotBlank(article.getCategory().getId())){
-//			Category category = categoryService.get(article.getCategory().getId());
-//		}
-//        model.addAttribute("contentViewList",getTplContent());
-//        model.addAttribute("article_DEFAULT_TEMPLATE",Article.DEFAULT_TEMPLATE);
+
 		model.addAttribute("article", article);
-		CmsUtils.addViewConfigAttribute(model, article.getCategory());
+		
 		return "modules/cms/articleForm";
 	}
 
@@ -135,9 +129,5 @@ public class ArticleController extends BaseController {
 		return JsonMapper.nonDefaultMapper().toJson(list);
 	}
 
-   /* private List<String> getTplContent() {
-   		List<String> tplList = fileTplService.getNameListByPrefix(siteService.get(Site.getCurrentSiteId()).getSolutionPath());
-   		tplList = TplUtils.tplTrim(tplList, Article.DEFAULT_TEMPLATE, "");
-   		return tplList;
-   	}*/
+  
 }

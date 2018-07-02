@@ -31,8 +31,7 @@ import com.xl.modules.sys.utils.UserUtils;
 
 /**
  * 栏目Controller
- * @author ThinkGem
- * @version 2013-4-21
+ * 
  */
 @Controller
 @RequestMapping(value = "${adminPath}/cms/category")
@@ -89,7 +88,7 @@ public class CategoryController extends BaseController {
 		}
 		categoryService.save(category);
 		addMessage(redirectAttributes, "保存栏目'" + category.getName() + "'成功");
-		return "redirect:" + adminPath + "/cms/category/?repage";
+		return "redirect:" + adminPath + "/cms/category/list?repage";
 	}
 	
 	@RequiresPermissions("cms:category:edit")
@@ -97,7 +96,7 @@ public class CategoryController extends BaseController {
 	public String delete(Category category, RedirectAttributes redirectAttributes) {
 		if(Global.isDemoMode()){
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/cms/category/";
+			return "redirect:" + adminPath + "/cms/category/list";
 		}
 		if (Category.isRoot(category.getId())){
 			addMessage(redirectAttributes, "删除栏目失败, 不允许删除顶级栏目或编号为空");
@@ -105,7 +104,7 @@ public class CategoryController extends BaseController {
 			categoryService.delete(category);
 			addMessage(redirectAttributes, "删除栏目成功");
 		}
-		return "redirect:" + adminPath + "/cms/category/";
+		return "redirect:" + adminPath + "/cms/category/list?repage";
 	}
 
 	/**
@@ -122,14 +121,14 @@ public class CategoryController extends BaseController {
     		categoryService.save(entitys[i]);
     	}
     	addMessage(redirectAttributes, "保存栏目排序成功!");
-		return "redirect:" + adminPath + "/cms/category/";
+		return "redirect:" + adminPath + "/cms/category/list?repage";
 	}
 	
 	@RequiresUser
 	@ResponseBody
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(String module, @RequestParam(required=false) String extId, HttpServletResponse response) {
-		response.setContentType("application/json; charset=UTF-8");
+		
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<Category> list = categoryService.findByUser(true, module);
 		for (int i=0; i<list.size(); i++){
@@ -146,9 +145,4 @@ public class CategoryController extends BaseController {
 		return mapList;
 	}
 
-   /* private List<String> getTplContent(String prefix) {
-   		List<String> tplList = fileTplService.getNameListByPrefix(siteService.get(Site.getCurrentSiteId()).getSolutionPath());
-   		tplList = TplUtils.tplTrim(tplList, prefix, "");
-   		return tplList;
-   	}*/
 }

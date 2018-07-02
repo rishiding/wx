@@ -40,11 +40,10 @@ public class Article extends DataEntity<Article> {
     private String customContentView;	// 自定义内容视图
    	private String viewConfig;	// 视图参数
    	private String companyId;//所属医院
-	private ArticleData articleData;	//文章副表
 	
 	private Date beginDate;	// 开始时间
 	private Date endDate;	// 结束时间
-	
+	private ArticleData articleData;	//文章副表
 	private User user;
     
 	public Article() {
@@ -64,11 +63,7 @@ public class Article extends DataEntity<Article> {
 		this.category = category;
 	}
 
-	public void prePersist(){
-		//TODO 后续处理，暂不知有何用处
-		//super.prePersist();
-		articleData.setId(this.id);
-	}
+	
 	
 	public Category getCategory() {
 		return category;
@@ -197,14 +192,7 @@ public class Article extends DataEntity<Article> {
         this.viewConfig = viewConfig;
     }
 
-	public ArticleData getArticleData() {
-		return articleData;
-	}
-
-	public void setArticleData(ArticleData articleData) {
-		this.articleData = articleData;
-	}
-
+	
 	public List<String> getPosidList() {
 		List<String> list = Lists.newArrayList();
 		if (posid != null){
@@ -241,6 +229,14 @@ public class Article extends DataEntity<Article> {
 
 	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
+	}
+
+	public ArticleData getArticleData() {
+		return articleData;
+	}
+
+	public void setArticleData(ArticleData articleData) {
+		this.articleData = articleData;
 	}
 	
 }
