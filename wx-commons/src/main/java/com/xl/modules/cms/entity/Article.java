@@ -23,8 +23,6 @@ import com.xl.modules.cms.utils.CmsUtils;
  */
 public class Article extends DataEntity<Article> {
 
-    public static final String DEFAULT_TEMPLATE = "frontViewArticle";
-	
 	private static final long serialVersionUID = 1L;
 	private Category category;// 分类编号
 	private String title;	// 标题

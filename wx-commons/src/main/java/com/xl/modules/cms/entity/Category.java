@@ -11,7 +11,6 @@ import org.hibernate.validator.constraints.Length;
 import com.google.common.collect.Lists;
 import com.xl.common.config.Global;
 import com.xl.common.persistence.TreeEntity;
-import com.xl.modules.cms.utils.CmsUtils;
 import com.xl.modules.sys.entity.Office;
 
 /**
@@ -182,14 +181,7 @@ public class Category extends TreeEntity<Category> {
 		this.keywords = keywords;
 	}
 	
-//	@NotNull
-//	public Integer getSort() {
-//		return sort;
-//	}
-//
-//	public void setSort(Integer sort) {
-//		this.sort = sort;
-//	}
+
 
 	@Length(min=1, max=1)
 	public String getInMenu() {

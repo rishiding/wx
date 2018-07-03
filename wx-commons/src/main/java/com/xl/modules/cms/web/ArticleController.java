@@ -53,9 +53,16 @@ public class ArticleController extends BaseController {
 			return new Article();
 		}
 	}
+	@RequiresPermissions("cms:article:view")
+	@RequestMapping(value = { ""})
+	public String index(Article article, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+       
+		return "modules/cms/articleIndex";
+	}
 	
 	@RequiresPermissions("cms:article:view")
-	@RequestMapping(value = {"list", ""})
+	@RequestMapping(value = {"list"})
 	public String list(Article article, HttpServletRequest request, HttpServletResponse response, Model model) {
 
         Page<Article> page = articleService.findPage(new Page<Article>(request, response), article, true); 
@@ -93,7 +100,8 @@ public class ArticleController extends BaseController {
 		}
 		articleService.save(article);
 		addMessage(redirectAttributes, "保存文章'" + StringUtils.abbr(article.getTitle(),50) + "'成功");
-		return "redirect:" + adminPath + "/cms/article/?repage";
+		String message= "保存文章'" + StringUtils.abbr(article.getTitle(),50) + "'成功";
+		return "redirect:" + adminPath + "/cms/article/list?message="+message;
 	}
 	
 	@RequiresPermissions("cms:article:edit")
@@ -104,8 +112,8 @@ public class ArticleController extends BaseController {
 			addMessage(redirectAttributes, "你没有删除或发布权限");
 		}
 		articleService.delete(article, isRe);
-		addMessage(redirectAttributes, (isRe!=null&&isRe?"发布":"删除")+"文章成功");
-		return "redirect:" + adminPath + "/cms/article/?repage&category.id="+(categoryId!=null?categoryId:"");
+		addMessage(redirectAttributes, "删除文章成功");
+		return "redirect:" + adminPath + "/cms/article/list";
 	}
 
 	/**

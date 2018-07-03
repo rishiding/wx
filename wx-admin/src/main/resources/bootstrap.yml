@@ -1,6 +1,6 @@
 spring:
   application:
-    name: wx-xf-spring-boot
+    name: wx-spring-boot
   http:
     encoding: { charset: UTF-8, enable: true, force: true }
 #产品信息设置

@@ -79,7 +79,7 @@
 			<if test="createBy != null and createBy.id != null and createBy.id != ''">
 				AND a.create_by  = #{createBy.id}
 			</if>
-			<!-- ${sqlMap.dsf}-->
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -175,8 +175,7 @@
 			create_date = #{createDate},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks},
-			company_id  = #{companyId},
+			remarks = #{remarks},		
 			del_flag = #{delFlag}
 		WHERE id = #{id}
 	</update>

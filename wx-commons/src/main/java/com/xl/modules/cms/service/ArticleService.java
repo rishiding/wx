@@ -43,16 +43,8 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 	
 	@Transactional(readOnly = false)
 	public Page<Article> findPage(Page<Article> page, Article article, boolean isDataScopeFilter) {
-		// 更新过期的权重，间隔为“6”个小时
-		Date updateExpiredWeightDate =  (Date)CacheUtils.get("updateExpiredWeightDateByArticle");
-		if (updateExpiredWeightDate == null || (updateExpiredWeightDate != null 
-				&& updateExpiredWeightDate.getTime() < new Date().getTime())){
-			dao.updateExpiredWeight(article);
-			CacheUtils.put("updateExpiredWeightDateByArticle", DateUtils.addHours(new Date(), 6));
-		}
-//		DetachedCriteria dc = dao.createDetachedCriteria();
-//		dc.createAlias("category", "category");
-//		dc.createAlias("category.site", "category.site");
+
+
 		if (article.getCategory()!=null && StringUtils.isNotBlank(article.getCategory().getId()) && !Category.isRoot(article.getCategory().getId())){
 			Category category = categoryDao.get(article.getCategory().getId());
 			if (category==null){
@@ -64,11 +56,8 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 		else{
 			article.setCategory(new Category());
 		}
-//		if (StringUtils.isBlank(page.getOrderBy())){
-//			page.setOrderBy("a.weight,a.update_date desc");
-//		}
-//		return dao.find(page, dc);
-	//	article.getSqlMap().put("dsf", dataScopeFilter(article.getCurrentUser(), "o", "u"));
+		article.setCompanyId(UserUtils.getUser().getCompany().getId());
+//		article.getSqlMap().put("dsf", dataScopeFilter(article.getCurrentUser(), "o", "u"));
 		return super.findPage(page, article);
 		
 	}
@@ -101,12 +90,13 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 			article.preInsert();
 			articleData = article.getArticleData();
 			articleData.setId(article.getId());
+			article.setCompanyId(UserUtils.getUser().getCompany().getId());
 			dao.insert(article);
 			articleDataDao.insert(articleData);
 		}else{
 			article.preUpdate();
 			articleData = article.getArticleData();
-			articleData.setId(article.getId());
+			articleData.setId(article.getId());			
 			dao.update(article);
 			articleDataDao.update(article.getArticleData());
 		}
@@ -114,11 +104,6 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 	
 	@Transactional(readOnly = false)
 	public void delete(Article article, Boolean isRe) {
-//		dao.updateDelFlag(id, isRe!=null&&isRe?Article.DEL_FLAG_NORMAL:Article.DEL_FLAG_DELETE);
-		// 使用下面方法，以便更新索引。
-		//Article article = dao.get(id);
-		//article.setDelFlag(isRe!=null&&isRe?Article.DEL_FLAG_NORMAL:Article.DEL_FLAG_DELETE);
-		//dao.insert(article);
 		super.delete(article);
 	}
 	
