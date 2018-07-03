@@ -188,7 +188,7 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
-		<shiro:hasPermission name="cms:article:audit">
+		<%-- <shiro:hasPermission name="cms:article:audit">
 			<div class="control-group">
 				<label class="control-label">发布状态:</label>
 				<div class="controls">
@@ -196,7 +196,7 @@
 					<span class="help-inline"></span>
 				</div>
 			</div>
-		</shiro:hasPermission>
+		</shiro:hasPermission> --%>
 		<%-- <shiro:hasPermission name="cms:category:edit">
             <div class="control-group">
                 <label class="control-label">自定义内容视图:</label>
