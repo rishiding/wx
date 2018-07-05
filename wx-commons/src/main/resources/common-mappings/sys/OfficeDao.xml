@@ -214,11 +214,9 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
-			useable=#{useable},
 			logo = #{logo},
 			banner = #{banner},
-			lat = #{lat},
-			lot = #{lot},
+			
 			lotlat = #{lotlat}
 		WHERE id = #{id}
 	</update>

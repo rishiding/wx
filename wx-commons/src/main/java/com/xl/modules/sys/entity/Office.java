@@ -204,9 +204,7 @@ public class Office extends TreeEntity<Office> {
 	public void setBanner(String banner) {
 		this.banner = banner;
 	}
-	public String getLotLat(){
-		return lot+","+lat;
-	}
+	
 	public double getLat() {
 		return lat;
 	}

@@ -5,7 +5,7 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <script src="${ctxStatic}/map/js/selectLocation.js" type="text/javascript"></script>
-	<title>医院管理</title>
+	<title>医院信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -36,25 +36,17 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/office/list?id=${office.parent.id}&parentIds=${office.parentIds}">医院列表</a></li>
-		<li class="active"><a href="${ctx}/sys/office/form?id=${office.id}&parent.id=${office.parent.id}">医院<shiro:hasPermission name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active">医院信息修改</li>
+		
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="office" action="${ctx}/sys/office/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="office" action="${ctx}/sys/office/info" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<input type="hidden" name="parent.id" value="0">
-		<div class="control-group">
-			<label class="control-label">归属区域:</label>
-			<div class="controls">
-                <sys:treeselect id="area" name="area.id" value="${office.area.id}" labelName="area.name" labelValue="${office.area.name}"
-					title="区域" url="/sys/area/treeData" cssClass="required"/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">医院名称:</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="name" htmlEscape="false" maxlength="50" class="required"  readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -72,43 +64,18 @@
 				<span class="help-inline"><font color="red">(*必填，最多4张)</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">医院编码:</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="50"/>
-			</div>
-		</div>
+		
 		<input type="hidden" name="type" value="1">
 		<div class="control-group">
-			<label class="control-label">机构级别:</label>
+			<label class="control-label">医院等级:</label>
 			<div class="controls">
 				<form:select path="grade" class="input-medium">
 					<form:options items="${fns:getDictList('sys_office_grade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">是否可用:</label>
-			<div class="controls">
-				<form:select path="useable">
-					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
-		<%-- <div class="control-group">
-			<label class="control-label">主负责人:</label>
-			<div class="controls">
-				 <sys:treeselect id="primaryPerson" name="primaryPerson.id" value="${office.primaryPerson.id}" labelName="office.primaryPerson.name" labelValue="${office.primaryPerson.name}"
-					title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">副负责人:</label>
-			<div class="controls">
-				 <sys:treeselect id="deputyPerson" name="deputyPerson.id" value="${office.deputyPerson.id}" labelName="office.deputyPerson.name" labelValue="${office.deputyPerson.name}"
-					title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
-			</div>
-		</div> --%>
+		
+		
 		<div class="control-group">
 			<label class="control-label">联系地址:</label>
 			<div class="controls">
@@ -160,8 +127,8 @@
 		</div>
 		
 		<div class="form-actions">
-			<shiro:hasPermission name="sys:office:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
+			
 		</div>
 	</form:form>
 	

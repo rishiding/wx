@@ -229,6 +229,43 @@ public class OfficeController extends BaseController {
 		}
 		return mapList;
 	}
+	
+	/**
+	 * 用户信息显示及保存
+	 * @param user
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("user")
+	@RequestMapping(value = "info")
+	public String info(Office office, HttpServletResponse response, Model model) {
+		Office hospital=officeService.get(UserUtils.getUser().getCompany());
+		if (StringUtils.isNotBlank(office.getName())){
+			if(Global.isDemoMode()){
+				model.addAttribute("message", "演示模式，不允许操作！");
+				return "modules/sys/officeInfo";
+			}
+			hospital.setGrade(office.getGrade());
+			hospital.setAddress(office.getAddress());
+			hospital.setZipCode(office.getZipCode());
+			hospital.setMaster(office.getMaster());
+			hospital.setPhone(office.getPhone());
+			hospital.setFax(office.getFax());
+			hospital.setEmail(office.getEmail());
+			hospital.setRemarks(office.getRemarks());
+			hospital.setLogo(office.getLogo());
+			hospital.setBanner(office.getBanner());
+			hospital.setLotlat(office.getLotlat());
+				
+			
+			officeService.updateCompanyInfo(hospital);
+			
+			model.addAttribute("message", "保存用户信息成功");
+		}
+		model.addAttribute("office", hospital);
+		return "modules/sys/officeInfo";
+	}
+
 	  
 	@ResponseBody 
 	@RequestMapping(value = "findInhospDept")  
