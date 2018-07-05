@@ -28,16 +28,15 @@
 		<sys:message content="${message}"/>
 	</form:form>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
-		<thead><tr><th>医院名称</th><th>科室名称</th><th>科室编码</th><th>备注</th><shiro:hasPermission name="sys:office:edit"><th>操作</th></shiro:hasPermission></tr></thead>
+		<thead><tr><th>所属医院</th><th>科室名称</th><th>科室编码</th><th>负责人</th><th>电话</th><shiro:hasPermission name="sys:office:edit"><th>操作</th></shiro:hasPermission></tr></thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="row">
 			<tr id="${row.id}" >
 			<td>${row.parent.name}</td>
 			<td><a href="${ctx}/sys/office/form?id=${row.id}">${row.name}</a></td>
-			<td>${row.code}</td>
-			
-			
-			<td>${row.remarks}</td>
+			<td>${row.code}</td>					
+			<td>${row.master}</td>
+			<td>${row.phone}</td>
 			<shiro:hasPermission name="sys:office:edit"><td>
 				<a href="${ctx}/sys/office/deptForm?id=${row.id}">修改</a>
 				<a href="${ctx}/sys/office/delete?id=${row.id}&type=2" onclick="return confirmx('要删除该科室及所有子科室项吗？', this.href)">删除</a>

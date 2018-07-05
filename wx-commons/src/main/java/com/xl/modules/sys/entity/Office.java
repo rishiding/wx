@@ -22,7 +22,7 @@ public class Office extends TreeEntity<Office> {
 	private static final long serialVersionUID = 1L;
 	private Area area;		// 归属区域
 	private String code; 	// 机构编码
-	private String type; 	// 机构类型（1：消防局；2：街道办；）
+	private String type; 	// 机构类型（1：医院；2：科室；）
 	private String grade; 	// 机构等级（1：一级；2：二级；3：三级；4：四级）
 	private String address; // 联系地址
 	private String zipCode; // 邮政编码
@@ -33,6 +33,11 @@ public class Office extends TreeEntity<Office> {
 	private String useable;//是否可用
 	private User primaryPerson;//主负责人
 	private User deputyPerson;//副负责人
+	private String logo;
+	private String banner;
+	private double lat;
+	private double lot;
+	private String lotlat;
 	private List<String> childDeptList;//快速添加子部门
 	
 	public Office(){
@@ -184,6 +189,48 @@ public class Office extends TreeEntity<Office> {
 //		return parent != null && parent.getId() != null ? parent.getId() : "0";
 //	}
 	
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+	public String getBanner() {
+		return banner;
+	}
+
+	public void setBanner(String banner) {
+		this.banner = banner;
+	}
+	public String getLotLat(){
+		return lot+","+lat;
+	}
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLot() {
+		return lot;
+	}
+
+	public void setLot(double lot) {
+		this.lot = lot;
+	}
+
+	public String getLotlat() {
+		return lotlat;
+	}
+
+	public void setLotlat(String lotlat) {
+		this.lotlat = lotlat;
+	}
+
 	@Override
 	public String toString() {
 		return name;

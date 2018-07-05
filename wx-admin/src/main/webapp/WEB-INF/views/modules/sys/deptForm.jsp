@@ -69,7 +69,7 @@
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">主负责人:</label>
 			<div class="controls">
 				 <sys:treeselect id="primaryPerson" name="primaryPerson.id" value="${office.primaryPerson.id}" labelName="office.primaryPerson.name" labelValue="${office.primaryPerson.name}"
@@ -82,19 +82,19 @@
 				 <sys:treeselect id="deputyPerson" name="deputyPerson.id" value="${office.deputyPerson.id}" labelName="office.deputyPerson.name" labelValue="${office.deputyPerson.name}"
 					title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
 			</div>
-		</div>
+		</div> --%>
 		<div class="control-group">
-			<label class="control-label">联系地址:</label>
+			<label class="control-label">地址:</label>
 			<div class="controls">
 				<form:input path="address" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">邮政编码:</label>
 			<div class="controls">
 				<form:input path="zipCode" htmlEscape="false" maxlength="50"/>
 			</div>
-		</div>
+		</div> --%>
 		<div class="control-group">
 			<label class="control-label">负责人:</label>
 			<div class="controls">
@@ -107,7 +107,7 @@
 				<form:input path="phone" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">传真:</label>
 			<div class="controls">
 				<form:input path="fax" htmlEscape="false" maxlength="50"/>
@@ -118,9 +118,9 @@
 			<div class="controls">
 				<form:input path="email" htmlEscape="false" maxlength="50"/>
 			</div>
-		</div>
+		</div> --%>
 		<div class="control-group">
-			<label class="control-label">备注:</label>
+			<label class="control-label">科室介绍:</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
 			</div>

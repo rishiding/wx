@@ -4,6 +4,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
+<script src="${ctxStatic}/map/js/selectLocation.js" type="text/javascript"></script>
 	<title>医院管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
@@ -11,8 +12,13 @@
 			$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
+					if($("#bannerImage").val().split("|")<1){
+						top.$.jBox.tip("banner不能为空，请上传。",'error', { focusId: "bannerImage" });
+						
+					}else{
+						loading('正在提交，请稍等...');
+						form.submit();
+					}
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
@@ -25,6 +31,7 @@
 				}
 			});
 		});
+		
 	</script>
 </head>
 <body>
@@ -51,6 +58,21 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">LOGO:</label>
+			<div class="controls">
+				<form:hidden id="logoImage" path="logo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
+				<sys:ckfinder input="logoImage" type="images" uploadPath="/hosp/logo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">banner:</label>
+			<div class="controls">
+				<form:hidden id="bannerImage" path="banner" htmlEscape="false" maxlength="255" class="input-xlarge" />
+				<sys:ckfinder input="bannerImage" type="images" uploadPath="/hosp/banner" selectMultiple="true" maxNum="4" maxWidth="100" maxHeight="100"/>
+				<span class="help-inline"><font color="red">(*必填，最多4张)</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">医院编码:</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="50"/>
@@ -73,7 +95,7 @@
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">主负责人:</label>
 			<div class="controls">
 				 <sys:treeselect id="primaryPerson" name="primaryPerson.id" value="${office.primaryPerson.id}" labelName="office.primaryPerson.name" labelValue="${office.primaryPerson.name}"
@@ -86,11 +108,17 @@
 				 <sys:treeselect id="deputyPerson" name="deputyPerson.id" value="${office.deputyPerson.id}" labelName="office.deputyPerson.name" labelValue="${office.deputyPerson.name}"
 					title="用户" url="/sys/office/treeData?type=3" allowClear="true" notAllowSelectParent="true"/>
 			</div>
-		</div>
+		</div> --%>
 		<div class="control-group">
 			<label class="control-label">联系地址:</label>
 			<div class="controls">
-				<form:input path="address" htmlEscape="false" maxlength="50"/>
+				<form:input path="address" htmlEscape="false" maxlength="50"/><input id="selectBtn" class="btn" type="button" value="地图选点" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">经纬度:</label>
+			<div class="controls">
+				<form:input path="lotlat" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -124,9 +152,10 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">备注:</label>
+			<label class="control-label">医院介绍:</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
+				<form:textarea id="content" path="remarks" htmlEscape="false" rows="3" maxlength="2000" class="input-xxlarge"/>
+				<sys:ckeditor replace="content" uploadPath="/sys/office" />
 			</div>
 		</div>
 		
@@ -135,5 +164,23 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	
+	<script type="text/javascript">
+	SelectLocation.init({
+        id:'selectBtn',     //打开地图窗口按钮的ID
+        url:'${ctxStatic}/map/bdMap.html',   //地图页面的地址
+//        width:'1024',        //打开地图窗口的宽度,可不传
+//        height:'800',        //打开地图窗口的高度,可不传
+//        top:'50',            //打开地图窗口距显示器顶部的距离,可不传
+//        left:'100',          //打开地图窗口显示器左边的距离,可不传
+        callback:function(selectedLocation){
+//             var gpsAddr = document.getElementById('address');
+//             var location = document.getElementById('lotlat');
+
+          $("#address").val(selectedLocation.gpsAddr);
+          $("#lotlat").val(selectedLocation.location);
+        }
+    });
+	</script>
 </body>
 </html>

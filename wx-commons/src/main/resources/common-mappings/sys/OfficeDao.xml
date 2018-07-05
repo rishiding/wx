@@ -19,6 +19,11 @@
 		a.fax, 
 		a.email, 
 		a.remarks,
+		a.logo,
+		a.banner,
+		a.lat,
+		a.lot,
+		a.lotlat,
 		a.create_by AS "createBy.id",
 		a.create_date,
 		a.update_by AS "updateBy.id",
@@ -128,6 +133,11 @@
 			del_flag,
 			useable,
 			primary_person,
+			logo,
+			banner,
+			lat,
+			lot,
+			lotlat,
 			deputy_person
 		) VALUES (
 			#{id}, 
@@ -153,6 +163,11 @@
 			#{delFlag},
 			#{useable},
 			#{primaryPerson.id},
+			#{logo},
+			#{banner},
+			#{lat},
+			#{lot},
+			#{lotlat},
 			#{deputyPerson.id}
 		)
 	</insert>
@@ -177,7 +192,34 @@
 			remarks = #{remarks},
 			useable=#{useable},
 			primary_person=#{primaryPerson.id},
+			logo = #{logo},
+			banner = #{banner},
+			lat = #{lat},
+			lot = #{lot},
+			lotlat = #{lotlat},
 			deputy_person=#{deputyPerson.id}
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 更新用户信息  -->
+	<update id="updateCompanyInfo">
+		UPDATE sys_office SET 			
+			grade = #{grade}, 
+			address = #{address}, 
+			zip_code = #{zipCode}, 
+			master = #{master}, 
+			phone = #{phone}, 
+			fax = #{fax}, 
+			email = #{email},
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate}, 
+			remarks = #{remarks},
+			useable=#{useable},
+			logo = #{logo},
+			banner = #{banner},
+			lat = #{lat},
+			lot = #{lot},
+			lotlat = #{lotlat}
 		WHERE id = #{id}
 	</update>
 	

@@ -107,12 +107,14 @@
 		</if>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<if test="company != null and company.id != null and company.id != ''">
+			<!-- and a.company_id = #{company.id} -->
 			AND (c.id = #{company.id} OR c.parent_ids LIKE 
 					<if test="dbName == 'oracle'">'%,'||#{company.id}||',%')</if>
 					<if test="dbName == 'mssql'">'%,'+#{company.id}+',%')</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{company.id}, ',%'))</if>
 		</if>
 		<if test="office != null and office.id != null and office.id != ''">
+			
 			AND (o.id = #{office.id} OR o.parent_ids LIKE 
 					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
 					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>

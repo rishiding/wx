@@ -21,5 +21,7 @@ public interface OfficeDao extends TreeDao<Office> {
  
 	public List<Office> findInhospDept(Office office);
 	
+	public int updateCompanyInfo(Office office);
+	
 }
  

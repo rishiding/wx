@@ -35,7 +35,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 	
 	private Category entity = new Category();
 	
-	public List<Category> findByUser(boolean isCurrentSite, String module){
+	public List<Category> findByUser(){
 		
 		List<Category> list = null;
 			User user = UserUtils.getUser();

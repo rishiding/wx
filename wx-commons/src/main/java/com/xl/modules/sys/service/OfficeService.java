@@ -5,7 +5,6 @@ package com.xl.modules.sys.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +20,8 @@ import com.xl.modules.sys.utils.UserUtils;
  */
 @Service
 @Transactional(readOnly = true)
-public class OfficeService extends TreeService<OfficeDao, Office> {
+public class OfficeService extends TreeService<OfficeDao, Office> {	
 	
-	@Autowired
-	private OfficeDao officeDao;
 
 	public List<Office> findAll(){
 		return UserUtils.getOfficeList();
@@ -64,11 +61,15 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	}
 
 	public List<Office> getAll(Office office) { 
-		return  officeDao.findAllList(new Office());
+		return  dao.findAllList(new Office());
 	}
  
 	public List<Office> findInhospDept(Office office) {
-		return officeDao.findInhospDept(office);
+		return dao.findInhospDept(office);
 	}
-	
+	@Transactional(readOnly = false)
+	public void updateCompanyInfo(Office office){
+		dao.updateCompanyInfo(office);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+	}
 } 

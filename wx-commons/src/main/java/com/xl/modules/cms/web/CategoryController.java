@@ -54,7 +54,9 @@ public class CategoryController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(Model model) {
 		List<Category> list = Lists.newArrayList();
-		List<Category> sourcelist = categoryService.findByUser(true, null);
+		Category entity=new Category();
+		entity.setOffice(UserUtils.getUser().getCompany());
+		List<Category> sourcelist = categoryService.findList(entity);
 		Category.sortList(list, sourcelist, Constants.ROOT_ID);
         model.addAttribute("list", list);
 		return "modules/cms/categoryList";
@@ -130,7 +132,9 @@ public class CategoryController extends BaseController {
 	public List<Map<String, Object>> treeData(String module, @RequestParam(required=false) String extId, HttpServletResponse response) {
 		
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		List<Category> list = categoryService.findByUser(true, module);
+		Category entity=new Category();
+		entity.setOffice(UserUtils.getUser().getCompany());
+		List<Category> list = categoryService.findList(entity);
 		for (int i=0; i<list.size(); i++){
 			Category e = list.get(i);
 			if (extId == null || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1)){
