@@ -45,7 +45,14 @@
 		LEFT JOIN SYS_USER pp ON pp.id = a.primary_person
 		LEFT JOIN SYS_USER dp ON dp.id = a.deputy_person
     </sql>
-	
+	<select id="getByWxUserId" resultType="Office">
+		SELECT
+			<include refid="officeColumns"/>
+		FROM sys_office a
+		<include refid="officeJoins"/>
+		right join wx_user wx on wx.last_login_hospital=a.id
+		WHERE wx.wx_user_id = #{wxUserId}
+	</select>
 	<select id="get" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>

@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,6 @@ import com.google.common.collect.Lists;
 import com.xl.common.config.Global;
 import com.xl.common.persistence.Page;
 import com.xl.common.service.CrudService;
-import com.xl.common.utils.CacheUtils;
 import com.xl.common.utils.StringUtils;
 import com.xl.modules.cms.dao.ArticleDao;
 import com.xl.modules.cms.dao.ArticleDataDao;

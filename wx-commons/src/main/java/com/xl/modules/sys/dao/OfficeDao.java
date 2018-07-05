@@ -6,6 +6,7 @@ package com.xl.modules.sys.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.xl.common.persistence.TreeDao;
 import com.xl.modules.sys.entity.Office;
@@ -22,6 +23,8 @@ public interface OfficeDao extends TreeDao<Office> {
 	public List<Office> findInhospDept(Office office);
 	
 	public int updateCompanyInfo(Office office);
+	
+	public Office getByWxUserId(@Param("wxUserId")String wxUserId);
 	
 }
  

@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xl.common.persistence.TreeEntity;
 import com.xl.modules.sys.utils.DictUtils;
 
@@ -48,7 +49,7 @@ public class Office extends TreeEntity<Office> {
 	public Office(String id){
 		super(id);
 	}
-	
+	@JsonIgnore
 	public List<String> getChildDeptList() {
 		return childDeptList;
 	}
@@ -56,7 +57,7 @@ public class Office extends TreeEntity<Office> {
 	public void setChildDeptList(List<String> childDeptList) {
 		this.childDeptList = childDeptList;
 	}
-
+	@JsonIgnore
 	public String getUseable() {
 		return useable;
 	}
@@ -64,7 +65,7 @@ public class Office extends TreeEntity<Office> {
 	public void setUseable(String useable) {
 		this.useable = useable;
 	}
-
+	@JsonIgnore
 	public User getPrimaryPerson() {
 		return primaryPerson;
 	}
@@ -72,7 +73,7 @@ public class Office extends TreeEntity<Office> {
 	public void setPrimaryPerson(User primaryPerson) {
 		this.primaryPerson = primaryPerson;
 	}
-
+	@JsonIgnore
 	public User getDeputyPerson() {
 		return deputyPerson;
 	}
@@ -83,6 +84,7 @@ public class Office extends TreeEntity<Office> {
 
 //	@JsonBackReference
 //	@NotNull
+	@JsonIgnore
 	public Office getParent() {
 		return parent;
 	}
@@ -112,10 +114,14 @@ public class Office extends TreeEntity<Office> {
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	@JsonIgnore
 	@Length(min=1, max=1)
 	public String getGrade() {
 		return grade;
+	}
+	
+	public String getGradeName(){
+		return DictUtils.getDictLabel(grade, "sys_office_grade", "");
 	}
 
 	public void setGrade(String grade) {
@@ -204,7 +210,7 @@ public class Office extends TreeEntity<Office> {
 	public void setBanner(String banner) {
 		this.banner = banner;
 	}
-	
+	@JsonIgnore
 	public double getLat() {
 		return lat;
 	}
@@ -212,7 +218,7 @@ public class Office extends TreeEntity<Office> {
 	public void setLat(double lat) {
 		this.lat = lat;
 	}
-
+	@JsonIgnore
 	public double getLot() {
 		return lot;
 	}
