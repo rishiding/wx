@@ -154,8 +154,8 @@
 		<div class="control-group">
 			<label class="control-label">医院介绍:</label>
 			<div class="controls">
-				<form:textarea id="content" path="remarks" htmlEscape="false" rows="3" maxlength="2000" class="input-xxlarge"/>
-				<sys:ckeditor replace="content" uploadPath="/sys/office" />
+				<form:textarea id="content" path="remarks" htmlEscape="false" rows="3" maxlength="1000" class="input-xxlarge"/>
+				
 			</div>
 		</div>
 		

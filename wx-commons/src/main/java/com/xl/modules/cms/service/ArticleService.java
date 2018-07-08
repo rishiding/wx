@@ -55,7 +55,7 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 			article.setCategory(new Category());
 		}
 		if(StringUtils.isBlank(article.getCompanyId())){
-			if(UserUtils.getUser()!=null){
+			if(UserUtils.getUser()!=null&&UserUtils.getUser().getCompany()!=null&&StringUtils.isNotBlank(UserUtils.getUser().getCompany().getId())){
 				article.setCompanyId(UserUtils.getUser().getCompany().getId());
 			}
 		}
