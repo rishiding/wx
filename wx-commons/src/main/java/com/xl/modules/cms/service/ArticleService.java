@@ -54,7 +54,11 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 		else{
 			article.setCategory(new Category());
 		}
-		article.setCompanyId(UserUtils.getUser().getCompany().getId());
+		if(StringUtils.isBlank(article.getCompanyId())){
+			if(UserUtils.getUser()!=null){
+				article.setCompanyId(UserUtils.getUser().getCompany().getId());
+			}
+		}
 //		article.getSqlMap().put("dsf", dataScopeFilter(article.getCurrentUser(), "o", "u"));
 		return super.findPage(page, article);
 		

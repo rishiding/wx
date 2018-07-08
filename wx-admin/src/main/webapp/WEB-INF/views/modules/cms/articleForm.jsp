@@ -85,14 +85,9 @@
 			<label class="control-label">权重:</label>
 			<div class="controls">
 				<form:input path="weight" htmlEscape="false" maxlength="200" class="input-mini required digits"/>&nbsp;
-				<span>
-					<input id="weightTop" type="checkbox" onclick="$('#weight').val(this.checked?'999':'0')"><label for="weightTop">置顶</label>
-				</span>
-				&nbsp;过期时间：
-				<input id="weightDate" name="weightDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
-					value="<fmt:formatDate value="${article.weightDate}" pattern="yyyy-MM-dd"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
-				<span class="help-inline">数值越大排序越靠前，过期时间可为空，过期后取消置顶。</span>
+				
+				
+				<span class="help-inline">数值越大排序越靠前，</span>
 			</div>
 		</div>
 		<div class="control-group">

@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xl.common.persistence.TreeEntity;
+import com.xl.common.utils.StringUtils;
 import com.xl.modules.sys.utils.DictUtils;
 
 /**
@@ -210,17 +211,18 @@ public class Office extends TreeEntity<Office> {
 	public void setBanner(String banner) {
 		this.banner = banner;
 	}
-	@JsonIgnore
+	
 	public double getLat() {
-		return lat;
+		return StringUtils.isNotBlank(this.lotlat)?Double.parseDouble(lotlat.split(",")[1]):0;
+		
 	}
 
 	public void setLat(double lat) {
 		this.lat = lat;
 	}
-	@JsonIgnore
+	
 	public double getLot() {
-		return lot;
+		return StringUtils.isNotBlank(this.lotlat)?Double.parseDouble(lotlat.split(",")[0]):0;
 	}
 
 	public void setLot(double lot) {

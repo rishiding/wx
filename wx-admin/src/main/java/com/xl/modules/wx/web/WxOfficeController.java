@@ -1,5 +1,6 @@
 package com.xl.modules.wx.web;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -20,18 +21,48 @@ import com.xl.common.config.ResponseCodeCanstants;
 import com.xl.common.config.ResponseResult;
 import com.xl.common.persistence.Page;
 import com.xl.common.web.BaseController;
+import com.xl.modules.gen.util.DecodeUtils;
 import com.xl.modules.sys.entity.Office;
 import com.xl.modules.sys.entity.User;
 import com.xl.modules.sys.service.OfficeService;
 import com.xl.modules.sys.service.SystemService;
+import com.xl.modules.wx.vo.Banner;
 
 @Controller
-@RequestMapping(value = "${frontPath}/office")
+@RequestMapping(value = "${frontPath}/api/office")
 public class WxOfficeController extends BaseController{
 	@Autowired
 	private OfficeService officeService;
 	@Autowired
 	private SystemService userService;
+	/**
+	 * 获取医院
+	 * @param hospitalid
+	 * @param wxuserid
+	 * @return
+	 */
+	
+	@ResponseBody 
+	@RequestMapping(value = "getBanners")  
+	public Object getBanners(String hospitalid,String wxuserid,HttpServletRequest request) {  
+		Office hospital=null;
+		if(StringUtils.isNotBlank(hospitalid)){
+			hospital=officeService.get(hospitalid);
+		}
+		if(hospital==null&&StringUtils.isNotBlank(wxuserid)){
+			hospital=officeService.getByWxUserId(wxuserid);
+		}
+		if(hospital==null){
+			return new ResponseResult(ResponseCodeCanstants.FAILED, "参数异常"); 
+		}else{
+			String arr[]=hospital.getBanner().split("\\|");
+			List<Banner> list=Lists.newArrayList();
+			Arrays.asList(arr).forEach((a)->{if(StringUtils.isNotBlank(a))list.add(new Banner("",a));});
+			return new ResponseResult(ResponseCodeCanstants.SUCCESS,list , "操作成功");  
+		}
+		
+	}
+	
 	/**
 	 * 获取医院
 	 * @param hospitalid
@@ -49,9 +80,13 @@ public class WxOfficeController extends BaseController{
 		if(hospital==null&&StringUtils.isNotBlank(wxuserid)){
 			hospital=officeService.getByWxUserId(wxuserid);
 		}
+		
 		if(hospital==null){
 			return new ResponseResult(ResponseCodeCanstants.FAILED, "参数异常"); 
 		}else{
+			if(StringUtils.isNotBlank(hospital.getRemarks())){
+				hospital.setRemarks(DecodeUtils.decord(hospital.getRemarks()));
+			}
 			return new ResponseResult(ResponseCodeCanstants.SUCCESS, hospital, "操作成功");  
 		}
 		

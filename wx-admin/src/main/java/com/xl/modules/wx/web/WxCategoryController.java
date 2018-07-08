@@ -25,9 +25,10 @@ import com.xl.modules.cms.entity.Category;
 import com.xl.modules.cms.service.ArticleDataService;
 import com.xl.modules.cms.service.ArticleService;
 import com.xl.modules.cms.service.CategoryService;
+import com.xl.modules.gen.util.DecodeUtils;
 import com.xl.modules.sys.entity.Office;
 @Controller
-@RequestMapping(value = "${frontPath}/category")
+@RequestMapping(value = "${frontPath}/api/category")
 public class WxCategoryController extends BaseController{
 	@Autowired
 	private CategoryService categoryService;
@@ -35,6 +36,26 @@ public class WxCategoryController extends BaseController{
 	private ArticleService articleService;
 	@Autowired
 	private ArticleDataService articleDataService;
+	/**
+	 * 最新新闻
+	 * @param categoryId
+	 * @param hospitalid
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody 
+	@RequestMapping(value = {"news"})
+	public Object news(@RequestParam(required=true)String hospitalid, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Article article =new Article();
+		article.setCompanyId(hospitalid);
+		article.setTitle(DecodeUtils.decord(article.getTitle()));
+		article.setDescription(DecodeUtils.decord(article.getDescription()));
+		
+        Page<Article> page = articleService.findPage(new Page<Article>(request, response), article, true); 
+        return new ResponseResult(ResponseCodeCanstants.SUCCESS,page, "成功");
+	}
 /**
  * 获取文章列表
  * @param categoryId
@@ -63,8 +84,11 @@ public class WxCategoryController extends BaseController{
 	@RequestMapping(value = "getArticle")
 	public Object getArticle(@RequestParam(required=true)String id, Model model) {
 		Article article=articleService.get(id);
+		article.setTitle(DecodeUtils.decord(article.getTitle()));
+		article.setDescription(DecodeUtils.decord(article.getDescription()));
 		
 		article.setArticleData(articleDataService.get(article.getId()));
+		article.getArticleData().setContent(DecodeUtils.decord(article.getArticleData().getContent()));
 		articleService.updateHitsAddOne(id);
 		return new ResponseResult(ResponseCodeCanstants.SUCCESS, article, "操作成功");  
 		
