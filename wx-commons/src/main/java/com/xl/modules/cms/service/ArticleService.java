@@ -16,6 +16,8 @@ import com.google.common.collect.Lists;
 import com.xl.common.config.Global;
 import com.xl.common.persistence.Page;
 import com.xl.common.service.CrudService;
+import com.xl.common.utils.ContentUtils;
+import com.xl.common.utils.DecodeUtils;
 import com.xl.common.utils.StringUtils;
 import com.xl.modules.cms.dao.ArticleDao;
 import com.xl.modules.cms.dao.ArticleDataDao;
@@ -91,6 +93,12 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 		if (StringUtils.isBlank(article.getId())){
 			article.preInsert();
 			articleData = article.getArticleData();
+			try {
+				articleData.setContent(ContentUtils.getContent(articleData.getContent()));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			articleData.setId(article.getId());
 			article.setCompanyId(UserUtils.getUser().getCompany().getId());
 			dao.insert(article);
@@ -98,6 +106,12 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 		}else{
 			article.preUpdate();
 			articleData = article.getArticleData();
+			try {
+				articleData.setContent(ContentUtils.getContent(articleData.getContent()));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			articleData.setId(article.getId());			
 			dao.update(article);
 			articleDataDao.update(article.getArticleData());

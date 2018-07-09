@@ -1,11 +1,12 @@
-package com.xl.modules.gen.util;
+package com.xl.common.utils;
 
-import com.soecode.wxtools.util.StringUtils;
 
 public class DecodeUtils {
 	public static String decord(String str){
 		if(StringUtils.isNotBlank(str)){
+			str=str.replace("img 360chrome_form_autofill", "img autofill");
 			return str.replace("&amp;","&");
+			
 		}else{
 			return "";
 		}

@@ -25,7 +25,7 @@ import com.xl.modules.cms.entity.Category;
 import com.xl.modules.cms.service.ArticleDataService;
 import com.xl.modules.cms.service.ArticleService;
 import com.xl.modules.cms.service.CategoryService;
-import com.xl.modules.gen.util.DecodeUtils;
+import com.xl.common.utils.DecodeUtils;
 import com.xl.modules.sys.entity.Office;
 @Controller
 @RequestMapping(value = "${frontPath}/api/category")

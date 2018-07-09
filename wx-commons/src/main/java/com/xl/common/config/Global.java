@@ -98,6 +98,12 @@ public class Global {
         return getConfig("adminPath");
     }
     /**
+     * 获取获取访问路径端根路径
+     */
+    public static String getServerPath() {
+        return getConfig("serverPath");
+    }
+    /**
 	 * 获取前端根路径
 	 */
 	public static String getFrontPath() {

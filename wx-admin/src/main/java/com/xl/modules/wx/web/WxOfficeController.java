@@ -21,7 +21,7 @@ import com.xl.common.config.ResponseCodeCanstants;
 import com.xl.common.config.ResponseResult;
 import com.xl.common.persistence.Page;
 import com.xl.common.web.BaseController;
-import com.xl.modules.gen.util.DecodeUtils;
+import com.xl.common.utils.DecodeUtils;
 import com.xl.modules.sys.entity.Office;
 import com.xl.modules.sys.entity.User;
 import com.xl.modules.sys.service.OfficeService;

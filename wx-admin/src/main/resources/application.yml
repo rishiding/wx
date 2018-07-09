@@ -55,6 +55,7 @@ mybatis:
 #admin页面管理Path
 adminPath: /admin
 frontPath: /f
+serverPath: http://localhost:9090
 #网站URL后缀
 urlSuffix: .html
 #分页配置
