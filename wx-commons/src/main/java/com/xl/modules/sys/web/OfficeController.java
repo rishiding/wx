@@ -62,6 +62,10 @@ public class OfficeController extends BaseController {
 			office=new Office();
 		}
 		office.setType("2");
+		User user=UserUtils.getUser();
+		if(!user.isAdmin()){
+			office.setParent(user.getCompany());
+		}
 		office.getSqlMap().put("dsf", BaseService.dataScopeFilter(UserUtils.getUser(), "a", ""));
         Page<Office> page = officeService.findPage(new Page<Office>(request, response), office);
         model.addAttribute("page", page);

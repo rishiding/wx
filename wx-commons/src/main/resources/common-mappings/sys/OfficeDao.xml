@@ -80,6 +80,9 @@
 		<if test="type != null and type != ''">
 			and a.type= #{type}
 		</if>
+		<if test="parent != null and parent.id != null and parent.id != ''">
+			and a.parent_id= #{parent.id}
+		</if>
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
 		

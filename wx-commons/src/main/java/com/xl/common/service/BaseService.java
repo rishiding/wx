@@ -36,6 +36,9 @@ public abstract class BaseService {
 	 * @return 标准连接条件对象
 	 */
 	public static String dataScopeFilter(User user, String officeAlias, String userAlias) {
+		if(user==null){
+			return "";
+		}
 
 		StringBuilder sqlString = new StringBuilder();
 		
@@ -85,7 +88,7 @@ public abstract class BaseService {
 				}else {
 					for (String oa : StringUtils.split(officeAlias, ",")){
 						//sqlString.append(" OR " + oa + ".id  = " + user.getOffice().getId());
-						sqlString.append(" OR " + oa + ".id IS NULL");
+						//sqlString.append(" OR " + oa + ".id IS NULL");
 					}
 				}
 			}else{

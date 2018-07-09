@@ -109,6 +109,21 @@ public class WxOfficeController extends BaseController{
 		return new ResponseResult(ResponseCodeCanstants.SUCCESS,page, "成功");
 	}
 	/**
+	 * 获取专家
+	 * @param hospitalid
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "docInfo")
+	public Object docInfo(HttpServletRequest request, HttpServletResponse response,@RequestParam(required=true) String id) {		
+		User page=userService.getUser(id);
+		if(page!=null){
+			return new ResponseResult(ResponseCodeCanstants.SUCCESS,page, "成功");
+		}else{
+			return new ResponseResult(ResponseCodeCanstants.FAILED, "参数异常");
+		}
+	}
+	/**
 	 * 获取科室
 	 * @param hospitalid
 	 * @return
