@@ -72,6 +72,11 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		dao.updateCompanyInfo(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
+	@Transactional(readOnly = false)
+	public void updateErcode(String ercode,String id){
+		dao.updateErcode(ercode,id);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+	}
 	public Office getByWxUserId(String wxUserId){
 		return dao.getByWxUserId(wxUserId);
 	}

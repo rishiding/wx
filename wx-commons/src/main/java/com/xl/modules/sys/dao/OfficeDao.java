@@ -26,5 +26,7 @@ public interface OfficeDao extends TreeDao<Office> {
 	
 	public Office getByWxUserId(@Param("wxUserId")String wxUserId);
 	
+	public int updateErcode(@Param("ercode")String ercode,@Param("id")String id);
+	
 }
  

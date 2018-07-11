@@ -24,6 +24,7 @@
 		a.lat,
 		a.lot,
 		a.lotlat,
+		a.ercode,
 		a.create_by AS "createBy.id",
 		a.create_date,
 		a.update_by AS "updateBy.id",
@@ -181,7 +182,11 @@
 			#{deputyPerson.id}
 		)
 	</insert>
-	
+	<update id="updateErcode">
+		UPDATE sys_office SET 			
+			ercode=#{ercode}
+		WHERE id = #{id}
+	</update>
 	<update id="update">
 		UPDATE sys_office SET 
 			parent_id = #{parent.id}, 

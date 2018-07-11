@@ -40,6 +40,7 @@ public class Office extends TreeEntity<Office> {
 	private double lat;
 	private double lot;
 	private String lotlat;
+	private String ercode;//二维码路径
 	private List<String> childDeptList;//快速添加子部门
 	
 	public Office(){
@@ -235,6 +236,14 @@ public class Office extends TreeEntity<Office> {
 
 	public void setLotlat(String lotlat) {
 		this.lotlat = lotlat;
+	}
+
+	public String getErcode() {
+		return ercode;
+	}
+
+	public void setErcode(String ercode) {
+		this.ercode = ercode;
 	}
 
 	@Override

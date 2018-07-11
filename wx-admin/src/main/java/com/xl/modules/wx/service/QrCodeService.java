@@ -10,7 +10,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxService;
 import com.xl.common.config.Global;
-import com.xl.common.mapper.JsonMapper;
 import com.xl.common.service.BaseService;
-import com.xl.common.utils.HttpUtils;
-import com.xl.modules.wx.vo.AccessToken;
 
 /**
  * 二维码服务
@@ -36,25 +32,9 @@ import com.xl.modules.wx.vo.AccessToken;
 @Service
 @Transactional(readOnly = true)
 public class QrCodeService extends BaseService{
-	private static String basePath = Global.USERFILES_BASE_URL+"wx";
-	private static String APPID="wx977ba15cb305ce5f";
-	private static String APPSECRET="69dceaa3dc9ca4859c5bca5545987b5d";
-	public static void main(String args[]){
-		QrCodeService qr=new QrCodeService();
-//		qr.getAccesstoken();
-		System.out.println(qr.getminiqrQr("hospitalId", "1"));
-	}
+	private static String basePath = Global.USERFILES_BASE_URL+"wx";	
 	
-	public String getAccesstoken(){
-		String url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+APPID+"&secret="+APPSECRET;
-		String out=HttpUtils.doPost(url, "");
-		logger.debug(out);
-		AccessToken t=(AccessToken)JsonMapper.fromJsonString(out, AccessToken.class);
-		if(t==null||StringUtils.isBlank(t.getAccessToken())){
-			return null;
-		}
-		return  t.getAccessToken();
-	}
+
 	/**
 	 * 生成二维码图片
 	 * @param sceneStr
@@ -69,8 +49,8 @@ public class QrCodeService extends BaseService{
         OutputStream outputStream = null;
         IService iService = new WxService();
         try {
-        	String accessToken=getAccesstoken();
-//        	String accessToken=iService.getAccessToken();//getAccesstoken();
+//        	String accessToken=getAccesstoken();
+        	String accessToken=iService.getAccessToken();//getAccesstoken();
             String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
             String savePath = Global.getUserfilesBaseDir()+ basePath + "/";
 			String saveUrl =  basePath + "/";
@@ -78,22 +58,22 @@ public class QrCodeService extends BaseService{
             param.put("scene", sceneStr);
             param.put("page", "pages/index/index");
             param.put("width", 430);
-            param.put("auto_color", true);
+            param.put("auto_color", false);
             param.put("hospitalId", hospitalId);
 //            param.put("is_hyaline", true);
-          /*  Map<String,Object> line_color = new HashMap<>();
+            Map<String,Object> line_color = new HashMap<>();
             line_color.put("r", 0);
             line_color.put("g", 0);
             line_color.put("b", 0);
-            param.put("line_color", line_color);*/
-            logger.info("调用生成微信URL接口传参:" + param);
+            param.put("line_color", line_color);
+            logger.debug("调用生成微信URL接口传参:" + param);
             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
             HttpEntity requestEntity = new HttpEntity(param, headers);
           
             ResponseEntity<byte[]> entity = rest.exchange(url, HttpMethod.POST, requestEntity, byte[].class, new Object[0]);
-            logger.info("调用小程序生成微信永久小程序码URL接口返回结果:" + entity.getBody());
+            logger.debug("调用小程序生成微信永久小程序码URL接口返回结果:" + entity.getBody());
             byte[] result = entity.getBody();
-            logger.info(Base64.getEncoder().encodeToString(result));
+            logger.debug(Base64.getEncoder().encodeToString(result));
             inputStream = new ByteArrayInputStream(result);
             File file = new File(savePath);  
 			if(!file.exists()){  
