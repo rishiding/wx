@@ -56,16 +56,16 @@ public class QrCodeService extends BaseService{
 			String saveUrl =  basePath + "/";
             Map<String,Object> param = new HashMap<>();
             param.put("scene", sceneStr);
-            param.put("page", "pages/index/index");
+            param.put("page", "pages/home/pages/index/index");
             param.put("width", 430);
             param.put("auto_color", false);
             param.put("hospitalId", hospitalId);
 //            param.put("is_hyaline", true);
-            Map<String,Object> line_color = new HashMap<>();
+            /*Map<String,Object> line_color = new HashMap<>();
             line_color.put("r", 0);
             line_color.put("g", 0);
             line_color.put("b", 0);
-            param.put("line_color", line_color);
+            param.put("line_color", line_color);*/
             logger.debug("调用生成微信URL接口传参:" + param);
             MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
             HttpEntity requestEntity = new HttpEntity(param, headers);
