@@ -10,7 +10,6 @@
 		<version>1.0</version>
 	</parent>   
   	<artifactId>wx-admin</artifactId>
-	<packaging>war</packaging>
   
     <dependencies>
         <dependency>
