@@ -129,6 +129,33 @@ public class WxOfficeController extends BaseController{
 	 * @return
 	 */
 	@ResponseBody
+	@RequestMapping(value = "hospital")
+	public List<Map<String, Object>> getHospital() {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		List<Office> list = officeService.findList(true);
+		String type="1";
+		for (int i=0; i<list.size(); i++){
+			Office e = list.get(i);
+			if ( (type == null || (type != null &&  type.equals(e.getType()) ))					
+					&& Global.YES.equals(e.getUseable())){
+				Map<String, Object> map = Maps.newHashMap();
+				map.put("id", e.getId());
+				map.put("pId", e.getParentId());
+				map.put("pIds", e.getParentIds());
+				map.put("name", e.getName());
+				map.put("logo", e.getLogo());
+				map.put("grade", e.getGradeName());
+				mapList.add(map);
+			}
+		}
+		return mapList;
+	}
+	/**
+	 * 获取科室
+	 * @param hospitalid
+	 * @return
+	 */
+	@ResponseBody
 	@RequestMapping(value = "getDept")
 	public List<Map<String, Object>> getDept(@RequestParam(required=true) String hospitalid) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
@@ -144,9 +171,7 @@ public class WxOfficeController extends BaseController{
 				map.put("pId", e.getParentId());
 				map.put("pIds", e.getParentIds());
 				map.put("name", e.getName());
-				if (type != null && "3".equals(type)){
-					map.put("isParent", true);
-				}
+				
 				mapList.add(map);
 			}
 		}

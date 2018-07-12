@@ -40,7 +40,7 @@ public class ErcodeController extends BaseController {
 			if (hospital == null) {
 				model.addAttribute("message", "系统异常");
 			}else if(StringUtils.isNotBlank(flag)&&flag.equals(Global.TRUE)){
-				String code=qrcodeService.getminiqrQr(hospital.getId(), hospital.getId());
+				String code=qrcodeService.getminiqrQr(hospital.getId());
 				officeService.updateErcode(code,hospital.getId());
 				hospital.setErcode(code);
 				model.addAttribute("message", "生成二维码成功");			

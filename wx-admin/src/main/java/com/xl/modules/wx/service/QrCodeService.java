@@ -10,15 +10,18 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.protocol.HTTP;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
+import com.alibaba.fastjson.JSON;
 import com.soecode.wxtools.api.IService;
 import com.soecode.wxtools.api.WxService;
 import com.xl.common.config.Global;
@@ -34,7 +37,14 @@ import com.xl.common.service.BaseService;
 public class QrCodeService extends BaseService{
 	private static String basePath = Global.USERFILES_BASE_URL+"wx";	
 	
-
+/*	public static void main(String args[]){
+		QrCodeService s=new QrCodeService();
+		s.getminiqrQr("1");
+		
+		
+	}*/
+	
+ 
 	/**
 	 * 生成二维码图片
 	 * @param sceneStr
@@ -42,39 +52,41 @@ public class QrCodeService extends BaseService{
 	 * @param hospitalId
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getminiqrQr(String sceneStr, String hospitalId) {
-        RestTemplate rest = new RestTemplate();
+	public String getminiqrQr( String hospitalId) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         IService iService = new WxService();
         try {
-//        	String accessToken=getAccesstoken();
-        	String accessToken=iService.getAccessToken();//getAccesstoken();
+        	String accessToken=iService.getAccessToken();
             String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
             String savePath = Global.getUserfilesBaseDir()+ basePath + "/";
 			String saveUrl =  basePath + "/";
             Map<String,Object> param = new HashMap<>();
-            param.put("scene", sceneStr);
+            param.put("scene", hospitalId);
             param.put("page", "pages/home/pages/index/index");
             param.put("width", 430);
-            param.put("auto_color", false);
-            param.put("hospitalId", hospitalId);
-//            param.put("is_hyaline", true);
-            /*Map<String,Object> line_color = new HashMap<>();
+            Map<String,Object> line_color = new HashMap<>();
             line_color.put("r", 0);
             line_color.put("g", 0);
             line_color.put("b", 0);
-            param.put("line_color", line_color);*/
+            param.put("line_color", line_color);
             logger.debug("调用生成微信URL接口传参:" + param);
-            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-            HttpEntity requestEntity = new HttpEntity(param, headers);
-          
-            ResponseEntity<byte[]> entity = rest.exchange(url, HttpMethod.POST, requestEntity, byte[].class, new Object[0]);
-            logger.debug("调用小程序生成微信永久小程序码URL接口返回结果:" + entity.getBody());
-            byte[] result = entity.getBody();
-            logger.debug(Base64.getEncoder().encodeToString(result));
-            inputStream = new ByteArrayInputStream(result);
+            CloseableHttpClient  httpClient = HttpClientBuilder.create().build();
+
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
+            String body = JSON.toJSONString(param);
+            StringEntity entity;
+            entity = new StringEntity(body);
+            entity.setContentType("image/png");
+
+            httpPost.setEntity(entity);
+            HttpResponse response;
+
+            response = httpClient.execute(httpPost);
+            inputStream = response.getEntity().getContent();
+            
+           
             File file = new File(savePath);  
 			if(!file.exists()){  
 			    file.mkdirs();  
