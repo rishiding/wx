@@ -29,7 +29,12 @@
 		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'0'}},
 			callback:{onClick:function(event, treeId, treeNode){
 					var id = treeNode.id == '0' ? '' :treeNode.id;
-					$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
+					var type=treeNode.type;
+					if(type =='1'){
+						$('#officeContent').attr("src","${ctx}/sys/user/list?company.id="+id+"&company.name="+treeNode.name);
+					}else{
+						$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
+					}
 				}
 			}
 		};

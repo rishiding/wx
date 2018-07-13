@@ -19,9 +19,6 @@ import com.xl.modules.sys.entity.Office;
  * @version 2013-05-15
  */
 public class Category extends TreeEntity<Category> {
-
-    public static final String DEFAULT_TEMPLATE = "frontList";
-
 	private static final long serialVersionUID = 1L;
 	private Office office;	// 归属部门
 	private String module; 	// 栏目模型（article：文章；picture：图片；download：下载；link：链接；special：专题）
