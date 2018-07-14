@@ -10,6 +10,11 @@
 <body onresize="mapResize()">
 	<div class="content">
 		<div class="LogoCon clear" style="font-size:18px;">
+			
+			<div style="display:block;margin-bottom:10px;">
+			查询的地址：<input type="text" id="localvalue" name="localvalue"/>
+			<span><input type="button" value="搜索" name="localsearch" id="localsearch" onclick="valueSearch()" style="margin-left: 8px;font-size:14px;width:80px;" /></span>
+			</div>
 			<div style="display:block;margin-bottom:10px;">
 				当前地址：<span id="currentAddr"></span>
 			</div>
@@ -576,6 +581,17 @@
 </body>
 <script>
 	loadBody();
+	
+	function valueSearch(){
+		var map=  window.map;
+		var local = new BMap.LocalSearch(map, {
+			 renderOptions:{map: map}
+		});
+		 var city = document.getElementById("localvalue").value;
+		 if(city != ""){
+		 local.search(city);
+		 }
+	}
 
 	function confirmSelect(){
 	    var selectLocation = {};
