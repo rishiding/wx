@@ -580,8 +580,14 @@
 </script>
 </body>
 <script>
-	loadBody(getQueryString("lat"),getQueryString("lot"));
-	
+	var lat=getQueryString("lat");
+	var lot=getQueryString("lot")
+	loadBody(lat,lot);
+	if(lat == ""||lat == null||lat == undefined){
+		
+	}else{
+		document.getElementById("pointInput").value=lot+","+lat;
+	}
 	function getQueryString(name) {
 	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 	    var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
