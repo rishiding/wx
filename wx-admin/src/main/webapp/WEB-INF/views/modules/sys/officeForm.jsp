@@ -168,15 +168,9 @@
 	<script type="text/javascript">
 	SelectLocation.init({
         id:'selectBtn',     //打开地图窗口按钮的ID
-        url:'${ctxStatic}/map/bdMap.html',   //地图页面的地址
-//        width:'1024',        //打开地图窗口的宽度,可不传
-//        height:'800',        //打开地图窗口的高度,可不传
-//        top:'50',            //打开地图窗口距显示器顶部的距离,可不传
-//        left:'100',          //打开地图窗口显示器左边的距离,可不传
-        callback:function(selectedLocation){
-//             var gpsAddr = document.getElementById('address');
-//             var location = document.getElementById('lotlat');
+        url:'${ctxStatic}/map/bdMap.html?lat=${office.lat}&lot=${office.lot}',   //地图页面的地址
 
+        callback:function(selectedLocation){         
           $("#address").val(selectedLocation.gpsAddr);
           $("#lotlat").val(selectedLocation.location);
         }

@@ -145,7 +145,7 @@ a:hover {
 .dt_nav .nav li {
 	height: 20px;
 	float: left;
-	background: url(../Images/map_bj1.gif) no-repeat left top #fff;
+	background: url(../images/map_bj1.gif) no-repeat left top #fff;
 	margin: 3px 10px 0 0;
 	padding-left: 6px;
 }
@@ -159,7 +159,7 @@ a:hover {
 	width: 6px;
 	height: 20px;
 	float: left;
-	background: url(../Images/map_bj1.gif) no-repeat right -20px;
+	background: url(../images/map_bj1.gif) no-repeat right -20px;
 }
 
 .dt_nav .nav li b {

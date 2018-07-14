@@ -288,9 +288,9 @@ function blur_(a, b, c) {
 }
 
 
-function loadBody() {
+function loadBody(lat,lot) {
     initMapSize();
-    initMap();
+    initMap(lat,lot);
     addMapControls();
     setTimeout(function() {
         mapResize()
@@ -307,28 +307,28 @@ function initMapSize() {
 }
 
 
-function initMap() {
+function initMap(lat,lot) {
     window.map = new BMap.Map("MapHolder", {enableMapClick: false});
     window.projection = new BMap.MercatorProjection();
-    var a = new BMap.Point(104.044264,30.631729);
-    map.addEventListener("load",
-    function(b) {
+    var a ;
+    if(lat==""||lat==null||lat==undefined){
+    	a = new BMap.Point(104.044264,30.631729);
+    }else{
+    	a = new BMap.Point(lot,lat);
+    }
+    map.addEventListener("load",function(b) {
         getCurrentCityName()
     });
-    map.addEventListener("moveend",
-    function(b) {
+    map.addEventListener("moveend",function(b) {
         getCurrentCityName()
     });
-    map.addEventListener("dragend",
-    function(b) {
+    map.addEventListener("dragend",function(b) {
         getCurrentCityName()
     });
-    map.addEventListener("zoomend",
-    function(b) {
+    map.addEventListener("zoomend",function(b) {
         getCurrentCityName()
     });
-    map.addEventListener("click",
-    function(c) {
+    map.addEventListener("click",  function(c) {
         var b = c.point;
         if (c.overlay && c.overlay instanceof BMap.Marker) {
             b = c.overlay.point
@@ -367,16 +367,14 @@ function initMap() {
         k.setPosition(d);
         k.setContent(c.point.lng + "," + c.point.lat)
     });
-    Fe.on(document.body, "mousemove",
-    function(c) {
+    Fe.on(document.body, "mousemove",  function(c) {
         var c = window.event || c;
         var b = c.srcElement || c.target;
         if (b.className != "BMap_mask" && temp.mouseLabel && temp.mouseLabel.isVisible()) {
             temp.mouseLabel.hide()
         }
     });
-    Fe.on(document.body, "mouseout",
-    function(c) {
+    Fe.on(document.body, "mouseout",function(c) {
         var c = window.event || c;
         var b = c.srcElement || c.target;
         if (b.className == "BMap_mask" && temp.mouseLabel && temp.mouseLabel.isVisible()) {
@@ -388,7 +386,12 @@ function initMap() {
     map.enableScrollWheelZoom();
     map.setDefaultCursor("default");
     map.setDraggingCursor("default");
-    searchByPoint("104.044264,30.631729");
+    if(lat==""||lat==null||lat==undefined){
+    	 searchByPoint("104.044264,30.631729");
+    }else{
+    	 searchByPoint(lot+","+lat);
+    }
+   
 }
 
 
