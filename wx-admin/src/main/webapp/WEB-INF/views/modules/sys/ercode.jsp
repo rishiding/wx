@@ -4,7 +4,7 @@
 <html>
 <head>
     <%@ include file="/WEB-INF/views/include/head.jsp" %>
-    <title>医院二维码管理</title>
+    <title>二维码管理</title>
     <meta name="decorator" content="default"/>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -28,7 +28,7 @@
         		请点击“生成”按钮生成二维码
         	</c:if>
         	<c:if test="${not empty office.ercode}">
-        		<img alt="医院二维码" src="${office.ercode}">
+        		<img alt="二维码图片" src="${office.ercode}">
         	</c:if>
             	
         </div>

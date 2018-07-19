@@ -49,8 +49,8 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<sys:tableSort id="orderBy" name="orderBy" value="${page.orderBy}" callback="page();"/>
 		<ul class="ul-form">
-			<li><label>归属医院：</label><sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}" 
-				title="公司" url="/sys/office/treeData?type=1" cssClass="input-small" allowClear="true"/></li>
+			<li><label>归属机构：</label><sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}" 
+				title="机构" url="/sys/office/treeData?type=1" cssClass="input-small" allowClear="true"/></li>
 			<li><label>登录名：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-medium"/></li>
 			<li><label>用户类型：</label>
 				<form:select path="userType" class="input-medium">
@@ -59,8 +59,8 @@
 				</form:select>
 			</li>
 			<li class="clearfix"></li>
-			<li><label>归属科室：</label><sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}" 
-				title="部门" url="/sys/office/treeData?type=2" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/></li>
+			<%-- <li><label>归属科室：</label><sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}" 
+				title="部门" url="/sys/office/treeData?type=2" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/></li> --%>
 			<li><label>姓&nbsp;&nbsp;&nbsp;名：</label><form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/>
 				</li>
@@ -71,9 +71,10 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead><tr>
 		<th>医院</th>
-		<th>科室</th>
 		<th class="sort-column login_name">登录名</th>
 		<th class="sort-column name">姓名</th>
+		<th class="sort-column gender">性别</th>
+		<th >职称</th>
 		<th >性别</th>
 		<th >用户类型</th>
 		<th>电话</th>
@@ -82,11 +83,11 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="user">
 				<tr>
-				<td>${user.company.name}</td>
-				<td>${user.office.name}</td>
+				<td>${user.company.name}</td>				
 				<td><a href="${ctx}/sys/user/form?id=${user.id}">${user.loginName}</a></td>
-				<td>${user.name}</td>
+				<td>${user.name}</td>				
 				<td>${user.genderName}</td>
+				<td>${user.title}</td>
 				<td>${user.userTypeName}</td>
 				<td>${user.phone}</td>
 				<td>${user.mobile}</td>

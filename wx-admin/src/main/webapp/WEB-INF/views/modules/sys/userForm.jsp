@@ -59,19 +59,19 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">归属医院:</label>
+			<label class="control-label">归属机构:</label>
 			<div class="controls">
                 <sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
 					title="公司" url="/sys/office/treeData?type=1" cssClass="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">归属部门:</label>
 			<div class="controls">
                 <sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
 					title="部门" url="/sys/office/treeData?type=2" cssClass="required" notAllowSelectParent="true"/>
 			</div>
-		</div>
+		</div> --%>
 		
 		<div class="control-group">
 			<label class="control-label">姓名:</label>
@@ -106,7 +106,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">医生类型:</label>
+			<label class="control-label">用户类型:</label>
 			<div class="controls">
 				<form:select path="doctorType" id="doctorType" class="input-xlarge required">
 					<form:option value="" label=""/>

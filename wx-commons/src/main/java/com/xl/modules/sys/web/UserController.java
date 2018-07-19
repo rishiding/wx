@@ -107,7 +107,7 @@ public class UserController extends BaseController {
 		}
 		// 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
 		user.setCompany(new Office(request.getParameter("company.id")));
-		user.setOffice(new Office(request.getParameter("office.id")));
+		user.setOffice(new Office(request.getParameter("company.id")));
 		// 如果新密码为空，则不更换密码
 		if (StringUtils.isNotBlank(user.getNewPassword())) {
 			user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
@@ -203,6 +203,9 @@ public class UserController extends BaseController {
 					if ("true".equals(checkLoginName("", user.getLoginName()))){
 						user.setPassword(SystemService.entryptPassword("123456"));
 						BeanValidators.validateWithException(validator, user);
+						if(user.getOffice()==null||StringUtils.isBlank(user.getOffice().getId())){
+							user.setOffice(user.getCompany());
+						}
 						systemService.saveUser(user);
 						successNum++;
 					}else{

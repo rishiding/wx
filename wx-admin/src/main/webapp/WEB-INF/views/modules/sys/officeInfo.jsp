@@ -5,7 +5,7 @@
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
 <script src="${ctxStatic}/map/js/selectLocation.js" type="text/javascript"></script>
-	<title>医院信息管理</title>
+	<title>机构信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -36,7 +36,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active">医院信息修改</li>
+		<li class="active">机构信息修改</li>
 		
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="office" action="${ctx}/sys/office/info" method="post" class="form-horizontal">
@@ -44,7 +44,7 @@
 		<sys:message content="${message}"/>
 		
 		<div class="control-group">
-			<label class="control-label">医院名称:</label>
+			<label class="control-label">机构名称:</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required"  readonly="true"/>
 			</div>
@@ -66,14 +66,14 @@
 		</div>
 		
 		<input type="hidden" name="type" value="1">
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">医院等级:</label>
 			<div class="controls">
 				<form:select path="grade" class="input-medium">
 					<form:options items="${fns:getDictList('sys_office_grade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-		</div>
+		</div> --%>
 		
 		
 		<div class="control-group">
@@ -119,10 +119,10 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">医院介绍:</label>
+			<label class="control-label">机构介绍:</label>
 			<div class="controls">
-				<form:textarea id="content" path="remarks" htmlEscape="false" rows="3" maxlength="2000" class="input-xxlarge"/>
-				<sys:ckeditor replace="content" uploadPath="/sys/office" />
+				<form:textarea id="content" path="remarks" htmlEscape="false" rows="3" maxlength="1000" class="input-xxlarge"/>
+				
 			</div>
 		</div>
 		

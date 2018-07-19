@@ -36,8 +36,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/sys/office/list?id=${office.parent.id}&parentIds=${office.parentIds}">医院列表</a></li>
-		<li class="active"><a href="${ctx}/sys/office/form?id=${office.id}&parent.id=${office.parent.id}">医院<shiro:hasPermission name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/sys/office/list?id=${office.parent.id}&parentIds=${office.parentIds}">机构列表</a></li>
+		<li class="active"><a href="${ctx}/sys/office/form?id=${office.id}&parent.id=${office.parent.id}">机构<shiro:hasPermission name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="office" action="${ctx}/sys/office/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">医院名称:</label>
+			<label class="control-label">机构名称:</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -73,20 +73,20 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">医院编码:</label>
+			<label class="control-label">机构编码:</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
 		<input type="hidden" name="type" value="1">
-		<div class="control-group">
+		<%-- <div class="control-group">
 			<label class="control-label">机构级别:</label>
 			<div class="controls">
 				<form:select path="grade" class="input-medium">
 					<form:options items="${fns:getDictList('sys_office_grade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-		</div>
+		</div> --%>
 		<div class="control-group">
 			<label class="control-label">是否可用:</label>
 			<div class="controls">
@@ -152,7 +152,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">医院介绍:</label>
+			<label class="control-label">介绍:</label>
 			<div class="controls">
 				<form:textarea id="content" path="remarks" htmlEscape="false" rows="3" maxlength="1000" class="input-xxlarge"/>
 				
