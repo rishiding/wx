@@ -50,32 +50,31 @@
 		<sys:tableSort id="orderBy" name="orderBy" value="${page.orderBy}" callback="page();"/>
 		<ul class="ul-form">
 			<li><label>归属机构：</label><sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}" 
-				title="机构" url="/sys/office/treeData?type=1" cssClass="input-small" allowClear="true"/></li>
+				title="机构" url="/sys/office/treeData?type=1" cssClass="input-medium" allowClear="true"/></li>
 			<li><label>登录名：</label><form:input path="loginName" htmlEscape="false" maxlength="50" class="input-medium"/></li>
+		
 			<li><label>用户类型：</label>
 				<form:select path="userType" class="input-medium">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('sys_user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-			</li>
-			<li class="clearfix"></li>
+			</li>	
 			<%-- <li><label>归属科室：</label><sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}" 
 				title="部门" url="/sys/office/treeData?type=2" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/></li> --%>
 			<li><label>姓&nbsp;&nbsp;&nbsp;名：</label><form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询" onclick="return page();"/>
 				</li>
-			<li class="clearfix"></li>
+			
 		</ul>
 	</form:form>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead><tr>
-		<th>医院</th>
+		<th>归属机构</th>
 		<th class="sort-column login_name">登录名</th>
 		<th class="sort-column name">姓名</th>
 		<th class="sort-column gender">性别</th>
-		<th >职称</th>
-		<th >性别</th>
+		<th >职称</th>		
 		<th >用户类型</th>
 		<th>电话</th>
 		<th>手机</th>

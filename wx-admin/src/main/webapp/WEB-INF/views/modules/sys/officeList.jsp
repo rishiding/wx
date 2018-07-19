@@ -28,14 +28,14 @@
 		<sys:message content="${message}"/>
 	</form:form>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
-		<thead><tr><th>机构名称</th><th>归属区域</th><th>机构编码</th><th>负责人</th><shiro:hasPermission name="sys:office:edit"><th>操作</th></shiro:hasPermission></tr></thead>
+		<thead><tr><th>机构名称</th><th>归属区域</th><th>机构编码</th><th>联系地址</th><th>负责人</th><shiro:hasPermission name="sys:office:edit"><th>操作</th></shiro:hasPermission></tr></thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="row">
 			<tr id="${row.id}" >
 			<td><a href="${ctx}/sys/office/form?id=${row.id}">${row.name}</a></td>
 			<td>${row.area.name}</td>
 			<td>${row.code}</td>
-			
+			<td title="${row.address}">${fns:abbr(row.address,30)}</td>
 			<td>${row.master}</td>
 			<shiro:hasPermission name="sys:office:edit"><td>
 				<a href="${ctx}/sys/office/form?id=${row.id}">修改</a>
