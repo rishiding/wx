@@ -22,7 +22,7 @@
 
     <sys:message content="${message}"/>
     <div class="control-group">
-        <label class="control-label">二维码:</label>
+        <label class="control-label"></label>
         <div class="controls">
         	<c:if test="${empty office.ercode}">
         		请点击“生成”按钮生成二维码
