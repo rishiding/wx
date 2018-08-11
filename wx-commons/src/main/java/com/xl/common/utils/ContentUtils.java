@@ -19,6 +19,7 @@ public class ContentUtils {
 	        String httpHost = Global.getServerPath();
 	        for (Element element : pngs) {
 	            String imgUrl = element.attr("src").trim();
+	            System.out.println(imgUrl);
 	            if (imgUrl.startsWith(Global.USERFILES_BASE_URL)) { // 会去匹配我们富文本的图片的 src 的相对路径的首个字符，请注意一下
 	                imgUrl =httpHost + imgUrl;
 	                element.attr("src", imgUrl);
